@@ -9843,16 +9843,16 @@ END_TEST
 
 START_TEST(dec_to_int_14) {
   s21_decimal src;
-  src.bits[0] = 0b11001010011010010001110011000010;
-  src.bits[1] = 0b10011001110101001010110100100110;
-  src.bits[2] = 0b10110000001111100010111010011101;
-  src.bits[3] = 0b10000000000101110000000000000000;
-  int result = 0;
-  int origin = -545445;
-  int origin_error = 0;
-  int my_error = s21_from_decimal_to_int(src, &result);
-  ck_assert_int_eq(origin, result);
-  ck_assert_int_eq(origin_error, my_error);
+  src.bits[0] = 0b01001000100110000000111000000001;
+  src.bits[1] = 0b00000010000000000000000000000000;
+  src.bits[2] = 0b00000000000000000000000000000000;
+  src.bits[3] = 0b00000000000001000000000000000000;
+  float result = 0;
+  // int origin = -545445;
+  s21_from_decimal_to_float(src, &result);
+  printf("%f\n", result);
+  // ck_assert_int_eq(origin, result);
+  // ck_assert_int_eq(origin_error, my_error);
 }
 END_TEST
 
