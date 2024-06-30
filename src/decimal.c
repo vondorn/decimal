@@ -2,22 +2,20 @@
 
 
 int main() {
-  s21_decimal src1;
-  src1.bits[0] = 0b00000000000000000000000000000001;
-  src1.bits[1] = 0b00000000000010000000000000000000;
-  src1.bits[2] = 0b10000000000000000000000000000000;
-  src1.bits[3] = 0b00000000000000000000000000000000;
-  // src2.bits[0] = 0b00000000000000000000000011010010;
-  // src2.bits[1] = 0b00000000000000000000000000000001;
-  // src2.bits[2] = 0b00000000000000000000000000000000;
-  // src2.bits[3] = 0b00000000000000000000000000000000;
-  // decimal_normalization(&src1, &src2);
-  // mult_by_num(&src1, 100000000);
-  // mult_by_num(&src1, 100000000);
-  // mult_by_num(&src1, 100000);
+  s21_decimal src1, src2;
+  src1.bits[0] = 0b00000000000000000000000000000000;
+  src1.bits[1] = 0b00000000000000000000000000000000;
+  src1.bits[2] = 0b00000000000000000000000000000000;
+  src1.bits[3] = 0b00000000000111000000000000000000;
+  src2.bits[0] = 0b00000000000000000010000000010011;
+  src2.bits[1] = 0b00000000000000000000000000000000;
+  src2.bits[2] = 0b10000000000000000000000000000000;
+  src2.bits[3] = 0b00000000000000000000000000000000;
+  decimal_normalization(&src1, &src2);
   print_decimal(src1);
-  // s21_is_equal(src1, src2) ? printf("EQUAL") : printf("NO");
-  // printf("%d - %d\n", get_scale(src1), get_scale(src2));
+  print_decimal(src2);
+  // s21_is_less(src1, src2) ? printf("YES\n") : printf("NO\n");
+  printf("%d - %d\n", get_scale(src1), get_scale(src2));
   return 0;
 }
 
@@ -80,14 +78,17 @@ int s21_is_not_equal(s21_decimal value_1, s21_decimal value_2) {
 
 int s21_is_less(s21_decimal value_1, s21_decimal value_2) {
   int res = 0;
+  if (s21_is_equal(value_1, value_2)) return res;
   if (!get_sign(value_1) && get_sign(value_2)) {
     res = 1;
   } else if (get_scale(value_1) > get_scale(value_2)) {
     res = 1;
   } else {
-    for (int i = 0; i < 2; i++) {
-      if (value_1.bits[i] < value_2.bits[i])
+    for (int i = 2; i >= 0; i--) {
+      if (value_1.bits[i] < value_2.bits[i]) {
         res = 1;
+      } else if (value_1.bits[i] > value_2.bits[i])
+        break;
     }
   }
   return res;
@@ -145,12 +146,11 @@ void decimal_normalization(s21_decimal* value_1, s21_decimal* value_2) {
 bool mult_by_10(s21_decimal* decimal, int scale_big, int* scale_little) {
   bool flag = 0;
   s21_decimal top_decimal;
-  top_decimal.bits[0] = 0b00011001100110011001100110011001;
+  top_decimal.bits[0] = 0b10011001100110011001100110011001;
   top_decimal.bits[1] = 0b10011001100110011001100110011001;
-  top_decimal.bits[2] = 0b10011001100110011001100110011001;
+  top_decimal.bits[2] = 0b00011001100110011001100110011001;
   top_decimal.bits[3] = decimal->bits[3];
   for (;scale_big > *scale_little; (*scale_little)++) {
-    printf("%d\n", *scale_little);
     if (s21_is_less_or_equal(*decimal, top_decimal)) {
       mult_by_num(decimal, 10);
     } else {
