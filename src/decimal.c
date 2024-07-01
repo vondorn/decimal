@@ -1,39 +1,43 @@
 #include "decimal.h"
 
 int main() {
-  s21_decimal src1, src2;
-  src1.bits[0] = 0b00010000011001000010000100100111;
-  src1.bits[1] = 0b00010000011010010000110010000100;
-  src1.bits[2] = 0b00110000000000000000000000000000;
-  src1.bits[3] = 0b00000000000111000000000000000000;
-  src2.bits[0] = 0b10010000010000100010000000010011;
-  src2.bits[1] = 0b01101000110000010100110000000000;
-  src2.bits[2] = 0b00000000000110001000010000000000;
-  src2.bits[3] = 0b00000000000001010000000000000000;
-
-  print_decimal(src1);
-  print_decimal(src2);
-  printf("%d - %d\n", get_scale(src1), get_scale(src2));
-
-  decimal_normalization(&src1, &src2);
-  print_decimal(src1);
-  print_decimal(src2);
+  s21_decimal src1, src2, result;
   
+  src1.bits[0] = 0b10100111011000111111111111111111;
+  src1.bits[1] = 0b00001101111000001011011010110011;
+  src1.bits[2] = 0b00000000000000000000000000000000;
+  src1.bits[3] = 0b10000000000001110000000000000000;
+
+  src2.bits[0] = 0b00000000000000000000000000000001;
+  src2.bits[1] = 0b00000000000000000000000000000000;
+  src2.bits[2] = 0b00000000000000000000000000000000;
+  src2.bits[3] = 0b00000000000000000000000000000000;
+
+  print_decimal(src1);
+  print_decimal(src2);
   printf("%d - %d\n", get_scale(src1), get_scale(src2));
+
+  s21_add(src1, src2, &result);
+  print_decimal(result);
+  printf("%d\n", get_scale(result));
   return 0;
 }
 
-void s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
+int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
+  int flag = 0;
   if (get_sign(value_1) && get_sign(value_2)) {
     set_sign(result);
   }
-  // decimal_normalization(&value_1, &value_2);
+  decimal_normalization(&value_1, &value_2);
   unsigned long long temp = 0;
   for (int i = 0; i < 3; i++) {
     temp += (unsigned long long)value_1.bits[i] + (unsigned long long)value_2.bits[i];
     result->bits[i] = (unsigned)temp;
     temp >>= 32;
   }
+  set_scale(result, get_scale(value_1));
+  if (temp) flag = 1;
+  return flag;
 }
 
 void decimal_normalization(s21_decimal* value_1, s21_decimal* value_2) {

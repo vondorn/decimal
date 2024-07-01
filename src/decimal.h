@@ -16,7 +16,7 @@ int get_scale(s21_decimal decimal);
 void set_scale(s21_decimal* decimal, int scale);
 void decimal_normalization(s21_decimal* value_1, s21_decimal* value_2);
 
-void s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
+int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
 void print_decimal(s21_decimal decimal);
 
@@ -37,3 +37,30 @@ void div_by_num(s21_decimal* decimal, int num);
 bool div_by_10(s21_decimal* decimal, int* scale_big, int scale_little);
 
 void to_binary(unsigned n);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 1.4855280472607053437301170471
+// 0002963757959488.7909114781715
+// 2963757959490.2764395254322053
+
+// https://findhow.org/5372-kalkulyator-bolshih-chisel.html
