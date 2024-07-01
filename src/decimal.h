@@ -33,4 +33,7 @@ int s21_negate(s21_decimal value, s21_decimal *result);
 
 void mult_by_num(s21_decimal* decimal, int num);
 bool mult_by_10(s21_decimal* decimal, int scale_big, int* scale_little);
+void div_by_num(s21_decimal* decimal, int num);
+bool div_by_10(s21_decimal* decimal, int* scale_big, int scale_little);
+
 void to_binary(unsigned n);
