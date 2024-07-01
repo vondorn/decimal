@@ -18,7 +18,9 @@ void set_scale(s21_decimal* decimal, int scale);
 void decimal_normalization(s21_decimal* value_1, s21_decimal* value_2);
 
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
+int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
+int real_add(s21_decimal value_1, s21_decimal value_2, s21_decimal* result);
 void print_decimal(s21_decimal decimal);
 
 int s21_is_equal(s21_decimal value_1, s21_decimal value_2);
@@ -41,6 +43,8 @@ void to_binary(unsigned n);
 void copy_decimal(s21_decimal *dest, const s21_decimal src);
 bool correct_decimal(s21_decimal value);
 
+int s21_floor(s21_decimal value, s21_decimal *result);
+int s21_round(s21_decimal value, s21_decimal *result);
 int s21_truncate(s21_decimal value, s21_decimal *result);
 
 
