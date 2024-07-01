@@ -22,6 +22,11 @@ int main() {
   // s21_floor(src1, &src2);
   // s21_truncate(src1, &src2);
   // s21_round(src1, &src2);
+  // s21_from_float_to_decimal(1.342020, &src2);
+  // printf("%d\n", get_scale(src2));
+  int aboba = 0;
+  s21_from_decimal_to_int(src1, &aboba);
+  printf("aboba:%d\n", aboba);
   print_decimal(src1);
   print_decimal(src2);
   return 0;
@@ -209,5 +214,36 @@ bool correct_decimal(s21_decimal value) {
   int scale = get_scale(value);
   if (scale >= 0 && scale <= 28)
     return_value = (value.bits[3] | POSSIBLE) & (~POSSIBLE);
+  return return_value;
+}
+
+int s21_from_float_to_decimal(float src, s21_decimal *dst){
+  int return_value = 0;
+  if (dst != NULL){
+    int beforepoint = (int)src;
+    src = (src - beforepoint) * 1000000;
+    int afterpoint = (int)src;
+    int total = (beforepoint * 1000000) + afterpoint;
+    dst->bits[0] = total;
+    for (int i = 1; i < 4; i++) {
+      dst->bits[i] = 0;
+    }
+    dst->bits[3] = (6 << 16);
+    if (src < 0) set_sign(dst);
+  }
+  else return_value = 1;
+  return return_value;
+}
+
+int s21_from_decimal_to_int(s21_decimal src, int *dst){
+  int return_value = 0;
+  bool flag = s21_truncate(src, &src);
+  
+  if(dst != NULL && flag == 0 && (src.bits[1] == 0 && src.bits[2] == 0 && src.bits[0] < 2147483648)) {
+    *dst = src.bits[0];
+    if(get_sign(src)) *dst *= -1;
+  }
+  else
+    return_value = 1;
   return return_value;
 }
