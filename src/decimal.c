@@ -1,25 +1,28 @@
 #include "decimal.h"
 
 int main() {
-  s21_decimal src1, src2, result;
+  s21_decimal src1, src2;
   
   src1.bits[0] = 0b10100111011000111111111111111111;
   src1.bits[1] = 0b00001101111000001011011010110011;
   src1.bits[2] = 0b00000000000000000000000000000000;
-  src1.bits[3] = 0b10000000000001110000000000000000;
+  src1.bits[3] = 0b00000000000001110000000000000000;
 
   src2.bits[0] = 0b00000000000000000000000000000001;
   src2.bits[1] = 0b00000000000000000000000000000000;
   src2.bits[2] = 0b00000000000000000000000000000000;
   src2.bits[3] = 0b00000000000000000000000000000000;
 
+  // print_decimal(src1);
+  // print_decimal(src2);
+  // printf("%d - %d\n", get_scale(src1), get_scale(src2));
+  // s21_add(src1, src2, &result);
+  // print_decimal(result);
+  // printf("%d\n", get_scale(result));
+  s21_truncate(src1, &src2);
+  correct_decimal(src1);
   print_decimal(src1);
   print_decimal(src2);
-  printf("%d - %d\n", get_scale(src1), get_scale(src2));
-
-  s21_add(src1, src2, &result);
-  print_decimal(result);
-  printf("%d\n", get_scale(result));
   return 0;
 }
 
@@ -99,4 +102,44 @@ void div_by_num(s21_decimal* decimal, int num) {
     decimal->bits[i] = (unsigned)temp;
     temp = (ost << 32);
   }
+}
+
+int s21_truncate(s21_decimal value, s21_decimal *result) {
+  s21_decimal bottom_decimal = {0};
+  bottom_decimal.bits[2] = 4294967295;
+  int return_value;
+  if (!correct_decimal(value)){
+    decimal_normalization(&value, &bottom_decimal);
+    copy_decimal(result, value);
+    return_value = 0;
+  }
+  else {
+    return_value = 1;
+  }
+  // printf("%d\n", get_scale(value));
+  // print_decimal(value);
+  // printf("%d\n", get_scale(value));
+  // print_decimal(bottom_decimal);
+  // print_decimal(*result);
+  return return_value;
+}
+
+// int s21_floor(s21_decimal value, s21_decimal *result) {
+//   if (get_scale(value) >= 0 && get_scale(value) <= 28){
+
+//   }
+// }
+
+void copy_decimal(s21_decimal *dest, const s21_decimal src) {
+  for(int i = 0; i <= 3; i++){
+    dest->bits[i] = src.bits[i];
+  }
+}
+
+bool correct_decimal(s21_decimal value) {
+  bool return_value = 1;
+  int scale = get_scale(value);
+  if (scale >= 0 && scale <= 28)
+    return_value = (value.bits[3] | POSSIBLE) & (~POSSIBLE);
+  return return_value;
 }

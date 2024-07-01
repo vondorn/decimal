@@ -5,6 +5,7 @@
 #include <string.h>
 #define NEGATIVE 0x80000000
 #define SCALE 0xff
+#define POSSIBLE 0x80ff0000
 
 typedef struct {
   unsigned bits[4];
@@ -37,6 +38,10 @@ void div_by_num(s21_decimal* decimal, int num);
 bool div_by_10(s21_decimal* decimal, int* scale_big, int scale_little);
 
 void to_binary(unsigned n);
+void copy_decimal(s21_decimal *dest, const s21_decimal src);
+bool correct_decimal(s21_decimal value);
+
+int s21_truncate(s21_decimal value, s21_decimal *result);
 
 
 
