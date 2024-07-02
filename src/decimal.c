@@ -74,8 +74,12 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   int sign_1 = get_sign(value_1);
   int sign_2 = get_sign(value_2);
   if (sign_1 && sign_2) {
-    set_sign(result);
-    flag = real_add(value_1, value_2, result);
+    if (s21_is_less_abs(value_1, value_2)){
+      flag = real_sub(value_2, value_1, result);
+    } else {
+      set_sign(result);
+      flag = real_sub(value_1, value_2, result);
+    }
   } else if (!sign_1 && !sign_2) {
     if (s21_is_less_abs(value_1, value_2)){
       set_sign(result);
@@ -119,11 +123,9 @@ void decimal_normalization(s21_decimal* value_1, s21_decimal* value_2) {
     if (scale_2 > scale_1 && !flag_overflow) {
       flag_overflow = mult_by_10(value_1, scale_2, &scale_1);
     } else if (scale_2 > scale_1 && flag_overflow) {
-      // printf("%u", value_2->bits[0]);
       div_by_10(value_2, &scale_2, scale_1);
     }
   }
-  // printf("\n%d\n", overcut[0]);
   set_scale(value_2, scale_2);
   set_scale(value_1, scale_1);
 }
@@ -305,4 +307,14 @@ int s21_from_decimal_to_float(s21_decimal src, float *dst){
   }
 
   return return_value;
+}
+
+int mod_by_num(s21_decimal value, int integer) {
+  unsigned long long buf = 0;
+  unsigned long long mod = 0;
+  for (int i = 2; i >= 0; i--) {
+    mod = (buf + value.bits[i]) % integer;
+    buf = mod << 32;
+  }
+  return mod;
 }
