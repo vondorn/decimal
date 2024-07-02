@@ -1,38 +1,38 @@
 #include "decimal.h"
 
-int main() {
-  s21_decimal src1, src2;
+// int main() {
+//   s21_decimal src1, src2;
   
-  src1.bits[0] = 0b110010;
-  src1.bits[1] = 0b11111110;
-  src1.bits[2] = 0;
-  src1.bits[3] = 0b100000000000000000;
+//   src1.bits[0] = 0b110010;
+//   src1.bits[1] = 0b11111110;
+//   src1.bits[2] = 0;
+//   src1.bits[3] = 0b100000000000000000;
 
-  src2.bits[0] = 0b00000000000000000000000000000001;
-  src2.bits[1] = 0b00000000000000000000000000000000;
-  src2.bits[2] = 0b00000000000000000000000000000000;
-  src2.bits[3] = 0b00000000000000000000000000000000;
+//   src2.bits[0] = 0b00000000000000000000000000000001;
+//   src2.bits[1] = 0b00000000000000000000000000000000;
+//   src2.bits[2] = 0b00000000000000000000000000000000;
+//   src2.bits[3] = 0b00000000000000000000000000000000;
 
-  // print_decimal(src1);
-  // print_decimal(src2);
-  // printf("%d - %d\n", get_scale(src1), get_scale(src2));
-  // s21_add(src1, src2, &result);
-  // print_decimal(result);
-  // printf("%d\n", get_scale(result));
-  s21_floor(src1, &src2);
-  // s21_truncate(src1, &src2);
-  // s21_round(src1, &src2);
-  // s21_from_float_to_decimal(1.342020, &src2);
-  // printf("%d\n", get_scale(src2));
-  // int aboba = 0;
-  // float abc = 2147483656;
-  // s21_from_float_to_decimal(abc, &src2);
-  // s21_from_decimal_to_int(src1, &aboba);
-  // printf("aboba:%d\n", aboba);
-  print_decimal(src1);
-  print_decimal(src2);
-  return 0;
-}
+//   // print_decimal(src1);
+//   // print_decimal(src2);
+//   // printf("%d - %d\n", get_scale(src1), get_scale(src2));
+//   // s21_add(src1, src2, &result);
+//   // print_decimal(result);
+//   // printf("%d\n", get_scale(result));
+//   s21_floor(src1, &src2);
+//   // s21_truncate(src1, &src2);
+//   // s21_round(src1, &src2);
+//   // s21_from_float_to_decimal(1.342020, &src2);
+//   // printf("%d\n", get_scale(src2));
+//   // int aboba = 0;
+//   // float abc = 2147483656;
+//   // s21_from_float_to_decimal(abc, &src2);
+//   // s21_from_decimal_to_int(src1, &aboba);
+//   // printf("aboba:%d\n", aboba);
+//   print_decimal(src1);
+//   print_decimal(src2);
+//   return 0;
+// }
 
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   int flag = 0;
@@ -110,8 +110,6 @@ void decimal_normalization(s21_decimal* value_1, s21_decimal* value_2) {
   int flag_overflow = 0;
   int scale_1 = get_scale(*value_1);
   int scale_2 = get_scale(*value_2);
-  int overcut[30] = {0};
-  // int i = 0;
   while (scale_1 != scale_2) {
     if (scale_1 > scale_2 && !flag_overflow) {
       flag_overflow = mult_by_10(value_2, scale_1, &scale_2);
@@ -121,11 +119,11 @@ void decimal_normalization(s21_decimal* value_1, s21_decimal* value_2) {
     if (scale_2 > scale_1 && !flag_overflow) {
       flag_overflow = mult_by_10(value_1, scale_2, &scale_1);
     } else if (scale_2 > scale_1 && flag_overflow) {
-      printf("%u", value_2->bits[0]);
+      // printf("%u", value_2->bits[0]);
       div_by_10(value_2, &scale_2, scale_1);
     }
   }
-  printf("\n%d\n", overcut[0]);
+  // printf("\n%d\n", overcut[0]);
   set_scale(value_2, scale_2);
   set_scale(value_1, scale_1);
 }
@@ -193,9 +191,10 @@ int s21_truncate(s21_decimal value, s21_decimal *result) {
 }
 
 int s21_floor(s21_decimal value, s21_decimal *result) {
-  if (!correct_decimal(value) && get_scale(value) > 0 && get_sign(value) == 1){
+  if (!correct_decimal(value) && get_scale(value) > 0 && get_sign(value) && !s21_is_zero(value)){
     s21_decimal plusone = {0};
     plusone.bits[0] = 1;
+    plusone.bits[3] = 0b10000000000000000000000000000000;
     s21_add(value, plusone, &value);
   }
   return s21_truncate(value, result);
@@ -255,7 +254,7 @@ int s21_from_float_to_decimal(float src, s21_decimal *dst){
   if (dst != NULL && src < MAXFLOAT){
     long int beforepoint = (long int)src;
     if (src < 0) beforepoint *= -1;
-    printf("%ld\n", beforepoint);
+    // printf("%ld\n", beforepoint);
     long int afterpoint = 0;
     bool flag = 0;
     char temp[75];
@@ -275,7 +274,7 @@ int s21_from_float_to_decimal(float src, s21_decimal *dst){
       dst->bits[i] = 0;
     }
     dst->bits[0] = total;
-    printf("%ld\n", total);
+    // printf("%ld\n", total);
     dst->bits[3] = (7 << 16);
     if (src < 0) set_sign(dst);
   }
