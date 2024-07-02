@@ -1,35 +1,36 @@
 #include "decimal.h"
 
-// int main() {
-//   s21_decimal src1, src2, result;
+int main() {
+  s21_decimal src1;
 
-//   src1.bits[0] = 0b10010001000010101111010011001010;
-//   src1.bits[1] = 0b11000000010001011101010111110010;
-//   src1.bits[2] = 0b00100111111001000001101100000000;
-//   src1.bits[3] = 0b10000000000101010000000000000000;
-//   src2.bits[0] = 0b00010001110011011101000110000101;
-//   src2.bits[1] = 0b11110101101111000110111111000000;
-//   src2.bits[2] = 0b00000010110101010000111100111111;
-//   src2.bits[3] = 0b10000000000100000000000000000000;
-//   //  s21_decimal first = {
-//   //     {2147483647, 2147483647, 2147483647, 0b10000000000001110000000000000000}};
-//   // s21_decimal second = {
-//   //     {2147483646, 2147483647, 2147483647, 0b10000000000001110000000000000000}};
-//   // print_decimal(src1);
-//   // print_decimal(src2);
-//   // decimal_normalization(&src1, &src2);
+  src1.bits[0] = 0b01011000010000110001100100000110;
+  src1.bits[1] = 0b00000000011100101101011000000101;
+  src1.bits[2] = 0b00000000000000000000000000000000;
+  src1.bits[3] = 0b00000000000000000000000000000000;
+  // src2.bits[0] = 0b00010001110011011101000110000101;
+  // src2.bits[1] = 0b11110101101111000110111111000000;
+  // src2.bits[2] = 0b00000010110101010000111100111111;
+  // src2.bits[3] = 0b10000000000100000000000000000000;
+  //  s21_decimal first = {
+  //     {2147483647, 2147483647, 2147483647, 0b10000000000001110000000000000000}};
+  // s21_decimal second = {
+  //     {2147483646, 2147483647, 2147483647, 0b10000000000001110000000000000000}};
+  // print_decimal(src1);
+  // print_decimal(src2);
+  // decimal_normalization(&src1, &src2);
 
-//   print_decimal(src1);
-//   print_decimal(src2);
-//   s21_sub(src1, src2, &result);
-//   // // print_decimal(src2);
-//   // // printf("%d - %d\n", get_scale(src1), get_scale(src2));
-//   // s21_add(src1, src2, &result);
-//   // // printf("%d - %d\n", get_scale(src1), get_scale(src2));
-//   print_decimal(result);
-//   // printf("%d\n", get_scale(result));
-//   return 0;
-// }
+  print_decimal(src1);
+  printf("%d\n", mod_by_num(src1, 10));
+  // print_decimal(src2);
+  // s21_sub(src1, src2, &result);
+  // // print_decimal(src2);
+  // // printf("%d - %d\n", get_scale(src1), get_scale(src2));
+  // s21_add(src1, src2, &result);
+  // // printf("%d - %d\n", get_scale(src1), get_scale(src2));
+  // print_decimal(result);
+  // printf("%d\n", get_scale(result));
+  return 0;
+}
 
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   int flag = 0;
@@ -171,4 +172,14 @@ void div_by_num(s21_decimal* decimal, int num) {
     decimal->bits[i] = (unsigned)temp;
     temp = (ost << 32);
   }
+}
+
+int mod_by_num(s21_decimal value, int integer) {
+  unsigned long long buf = 0;
+  unsigned long long mod = 0;
+  for (int i = 2; i >= 0; i--) {
+    mod = (buf + value.bits[i]) % integer;
+    buf = mod << 32;
+  }
+  return mod;
 }
