@@ -9846,11 +9846,11 @@ START_TEST(dec_to_int_14) {
   src.bits[0] = 0b01001000100110000000111000000001;
   src.bits[1] = 0b00000010000000000000000000000000;
   src.bits[2] = 0b00000000000000000000000000000000;
-  src.bits[3] = 0b00000000000001000000000000000000;
-  float result = 0;
+  src.bits[3] = 0b00000000000000000000000000000000;
+  int result = 0;
   // int origin = -545445;
-  s21_from_decimal_to_float(src, &result);
-  printf("%f\n", result);
+  s21_from_decimal_to_int(src, &result);
+  printf("%d\n", result);
   // ck_assert_int_eq(origin, result);
   // ck_assert_int_eq(origin_error, my_error);
 }

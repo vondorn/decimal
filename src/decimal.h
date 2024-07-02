@@ -21,6 +21,7 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
 int real_add(s21_decimal value_1, s21_decimal value_2, s21_decimal* result);
+int real_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal* result);
 
 void print_decimal(s21_decimal decimal);
 
@@ -30,6 +31,7 @@ int s21_is_less(s21_decimal value_1, s21_decimal value_2);
 int s21_is_greater(s21_decimal value_1, s21_decimal value_2);
 int s21_is_less_or_equal(s21_decimal value_1, s21_decimal value_2);
 int s21_is_greater_or_equal(s21_decimal value_1, s21_decimal value_2);
+int s21_is_less_abs(s21_decimal value_1, s21_decimal value_2);
 
 int s21_from_int_to_decimal(int src, s21_decimal *dst);
 
@@ -57,8 +59,16 @@ void to_binary(unsigned n);
 
 
 
+/*
+10000000000000000000000000000
+00000000000000000000000000001
 
++ & + 
+- & + 
++ & - 
+- & - ok
 
+*/
 
 
 

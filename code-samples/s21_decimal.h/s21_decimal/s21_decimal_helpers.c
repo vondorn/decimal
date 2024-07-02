@@ -130,7 +130,7 @@ int s21_divide_by_power_of_10(s21_decimal value, int power,
     value = *result;
   }
 
-  return status;
+  return status; 
 }
 int s21_get_exponent(s21_decimal value) {
   int status = (value.bits[3] & 0x00FF0000) >> 16;
@@ -229,3 +229,4 @@ int s21_get_bit(s21_decimal d, int i) {
   }
   return r;
 }
+

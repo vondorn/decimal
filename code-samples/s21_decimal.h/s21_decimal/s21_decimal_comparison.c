@@ -64,7 +64,7 @@ static int compare_mantises(s21_decimal value_1, s21_decimal value_2) {
     buffer_1.bits[i] = value_1.bits[i];
     buffer_2.bits[i] = value_2.bits[i];
   }
-
+  
   int ret = to_common_exp(&buffer_1, &buffer_2);
 
   if (ret == k_equal) ret = bitwise_comparison(buffer_1, buffer_2);
@@ -101,7 +101,7 @@ int s21_is_not_equal(s21_decimal value_1, s21_decimal value_2) {
 
 int s21_is_greater(s21_decimal value_1, s21_decimal value_2) {
   int ret = k_false;
-
+   
   if (s21_is_equal(value_1, value_2)) {
     ret = k_false;
   } else if (s21_get_sign(value_1) < s21_get_sign(value_2)) {

@@ -12,7 +12,7 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     buf_1[i] = value_1.bits[i];
     buf_2[i] = value_2.bits[i];
   }
-
+   
   int scale = s21_get_scale(value_1) >= s21_get_scale(value_2)
                   ? s21_get_scale(value_1)
                   : s21_get_scale(value_2);
