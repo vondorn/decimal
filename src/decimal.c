@@ -211,7 +211,6 @@ int s21_floor(s21_decimal value, s21_decimal *result) {
 //       half.bits[3] = 0b100000000000000000; //0.5
 //       s21_truncate(value, &temp);
 //       s21_sub(value, temp, &afterpoint);
-//       div_by_num(&afterpoint, scale - 1);
 //       print_decimal(afterpoint);
 //       if (s21_is_greater(afterpoint, half)){
 //         // result = value + 1
@@ -221,14 +220,11 @@ int s21_floor(s21_decimal value, s21_decimal *result) {
 //         s21_truncate(*result, result);
 //       }
 //       else if (s21_is_less(temp, half)){
-
+//         copy_decimal(result, value);
 //       }
-//       else {
-    
-//       }
-//       // print_decimal(temp);
-//       // s21_truncate(temp, &temp);
-//       // print_decimal(temp);
+//       print_decimal(temp);
+//       s21_truncate(temp, &temp);
+//       print_decimal(temp);
 //     }
 //   }
 
@@ -251,7 +247,7 @@ bool correct_decimal(s21_decimal value) {
 
 int s21_from_float_to_decimal(float src, s21_decimal *dst){
   int return_value = 0;
-  if (dst != NULL && src < MAXFLOAT){
+  if (dst != NULL && src < MAXFLOAT && src != INFINITY){
     long int beforepoint = (long int)src;
     if (src < 0) beforepoint *= -1;
     // printf("%ld\n", beforepoint);
@@ -274,11 +270,16 @@ int s21_from_float_to_decimal(float src, s21_decimal *dst){
       dst->bits[i] = 0;
     }
     dst->bits[0] = total;
-    // printf("%ld\n", total);
-    dst->bits[3] = (7 << 16);
+    printf("%ld\n", total);
+    dst->bits[3] = (6 << 16);
     if (src < 0) set_sign(dst);
   }
-  else return_value = 1;
+  else if (dst != NULL) {
+    s21_decimal zero = {0};
+    copy_decimal(dst, zero);
+    return_value = 1;
+  } else
+    return_value = 1;
   return return_value;
 }
 
