@@ -32,6 +32,7 @@ int s21_is_greater(s21_decimal value_1, s21_decimal value_2);
 int s21_is_less_or_equal(s21_decimal value_1, s21_decimal value_2);
 int s21_is_greater_or_equal(s21_decimal value_1, s21_decimal value_2);
 int s21_is_less_abs(s21_decimal value_1, s21_decimal value_2);
+int s21_is_zero(s21_decimal value);
 
 int s21_from_int_to_decimal(int src, s21_decimal *dst);
 

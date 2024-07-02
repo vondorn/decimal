@@ -54,6 +54,7 @@ void to_binary(unsigned n) {
 }
 
 void print_decimal(s21_decimal decimal) {
+  printf("%d: ", get_scale(decimal));
   if (get_sign(decimal)) printf("-");
   else printf(" ");
   for (int i = 2; i >= 0; i--) {
