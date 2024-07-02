@@ -24,9 +24,11 @@ int main() {
   // s21_round(src1, &src2);
   // s21_from_float_to_decimal(1.342020, &src2);
   // printf("%d\n", get_scale(src2));
-  int aboba = 0;
-  s21_from_decimal_to_int(src1, &aboba);
-  printf("aboba:%d\n", aboba);
+  // int aboba = 0;
+  float abc = 2147483656;
+  s21_from_float_to_decimal(abc, &src2);
+  // s21_from_decimal_to_int(src1, &aboba);
+  // printf("aboba:%d\n", aboba);
   print_decimal(src1);
   print_decimal(src2);
   return 0;
@@ -75,6 +77,22 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result)   {
   if (temp) flag = 1;
 
   return flag;
+}
+
+int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result){
+  int return_value = 0;
+  s21_decimal zero = {0};
+  if (correct_decimal(value_1) || correct_decimal(value_2)){
+    return_value = 4;
+  }
+  else if (s21_is_equal(value_2, zero)){
+    return_value = 3;
+  }
+  else {
+    decimal_normalization(&value_1, &value_2);
+
+  }
+  return return_value;
 }
 
 void decimal_normalization(s21_decimal* value_1, s21_decimal* value_2) {
@@ -219,16 +237,31 @@ bool correct_decimal(s21_decimal value) {
 
 int s21_from_float_to_decimal(float src, s21_decimal *dst){
   int return_value = 0;
-  if (dst != NULL){
-    int beforepoint = (int)src;
-    src = (src - beforepoint) * 1000000;
-    int afterpoint = (int)src;
-    int total = (beforepoint * 1000000) + afterpoint;
-    dst->bits[0] = total;
+  if (dst != NULL && src < MAXFLOAT){
+    long int beforepoint = (long int)src;
+    if (src < 0) beforepoint *= -1;
+    printf("%ld\n", beforepoint);
+    long int afterpoint = 0;
+    bool flag = 0;
+    char temp[75];
+    sprintf(temp, "%7f", src);
+    int j = 5;
+    for(int i = 0; j >= 0; i++){
+      if(flag == 1){
+        afterpoint += (temp[i] - '0') * pow(10, j);
+        j--;
+      }
+      else if(temp[i] == '.'){
+        flag = 1;
+      }
+    }
+    unsigned long int total = (beforepoint * 1000000) + afterpoint;
     for (int i = 1; i < 4; i++) {
       dst->bits[i] = 0;
     }
-    dst->bits[3] = (6 << 16);
+    dst->bits[0] = total;
+    printf("%ld\n", total);
+    dst->bits[3] = (7 << 16);
     if (src < 0) set_sign(dst);
   }
   else return_value = 1;
