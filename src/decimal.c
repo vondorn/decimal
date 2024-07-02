@@ -295,3 +295,14 @@ int s21_from_decimal_to_int(s21_decimal src, int *dst){
     return_value = 1;
   return return_value;
 }
+
+int s21_from_decimal_to_float(s21_decimal src, float *dst){
+  int return_value = 0;
+  if(dst != NULL && !correct_decimal(src)){
+    int scale = get_scale(src);
+    if (scale < 7){
+    }
+  }
+
+  return return_value;
+}
