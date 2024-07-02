@@ -6,7 +6,7 @@ int main() {
   src1.bits[0] = 0b110010;
   src1.bits[1] = 0b11111110;
   src1.bits[2] = 0;
-  src1.bits[3] = 0b1100000000000000000;
+  src1.bits[3] = 0b100000000000000000;
 
   src2.bits[0] = 0b00000000000000000000000000000001;
   src2.bits[1] = 0b00000000000000000000000000000000;
@@ -19,14 +19,14 @@ int main() {
   // s21_add(src1, src2, &result);
   // print_decimal(result);
   // printf("%d\n", get_scale(result));
-  // s21_floor(src1, &src2);
+  s21_floor(src1, &src2);
   // s21_truncate(src1, &src2);
   // s21_round(src1, &src2);
   // s21_from_float_to_decimal(1.342020, &src2);
   // printf("%d\n", get_scale(src2));
   // int aboba = 0;
-  float abc = 2147483656;
-  s21_from_float_to_decimal(abc, &src2);
+  // float abc = 2147483656;
+  // s21_from_float_to_decimal(abc, &src2);
   // s21_from_decimal_to_int(src1, &aboba);
   // printf("aboba:%d\n", aboba);
   print_decimal(src1);
@@ -196,9 +196,9 @@ int s21_floor(s21_decimal value, s21_decimal *result) {
   if (!correct_decimal(value) && get_scale(value) > 0 && get_sign(value) == 1){
     s21_decimal plusone = {0};
     plusone.bits[0] = 1;
-    s21_add(value, plusone, result);
+    s21_add(value, plusone, &value);
   }
-  return s21_truncate(*result, result);
+  return s21_truncate(value, result);
 }
 
 // int s21_round(s21_decimal value, s21_decimal *result) {
