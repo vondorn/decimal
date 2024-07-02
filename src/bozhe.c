@@ -55,17 +55,36 @@ void to_binary(unsigned n) {
 
 void print_decimal(s21_decimal decimal) {
   printf("%d: ", get_scale(decimal));
-  if (get_sign(decimal)) printf("-");
-  else printf(" ");
+  if (get_sign(decimal))
+    printf("-");
+  else
+    printf(" ");
   for (int i = 2; i >= 0; i--) {
     to_binary(decimal.bits[i]);
-    if (!i) printf("\n");
+    if (!i)
+      printf("\n");
+    // else
+    //   printf(".");
   }
 }
-
+//           784515454.798989865215454565210
+//           784515454.79898986521
+//  579895323215489956.67897455465
+// -579895322430974501.87998468944
+// -579895322430974501.87998468943
+// -579895322430974501.87998468944
 // int s21_from_decimal_to_int(s21_decimal src, int *dst) {
 //   for (int i = 2; i >= 0; i--) {
 //     *dst += src.bits[i];
 
 //   }
 // }
+
+int get_bit(s21_decimal decimal, int num) {
+  unsigned int mask = 1 << (num % 32);
+  int res = 0;
+  if (num <= 95 && num >= 0) {
+    res = decimal.bits[num / 32] & mask;
+  }
+  return res;
+}
