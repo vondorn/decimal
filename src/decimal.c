@@ -41,10 +41,17 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   if (sign_1 && sign_2) {
     set_sign(result);
     flag = real_add(value_1, value_2, result);
-  } else if (!sign_1 && sign_2) {
-    flag = s21_sub(value_2, value_1, result);
-  } else if (sign_1 && !sign_2) {
-    flag = s21_sub(value_1, value_2, result);    
+  } else if (!sign_1 && !sign_2) {
+    flag = real_add(value_1, value_2, result);
+  } else {
+    if (s21_is_less_abs(value_1, value_2)) {
+      if (!sign_1 && sign_2)set_sign(result);
+      flag = real_sub(value_2, value_1, result);
+    } 
+    else {
+      if (sign_1 && !sign_2) set_sign(result);
+      flag = real_sub(value_1, value_2, result);
+    }
   }
   return flag;
 }
@@ -53,52 +60,58 @@ int real_add(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   decimal_normalization(&value_1, &value_2);
   unsigned long long temp = 0;
   for (int i = 0; i < 3; i++) {
-    temp += (unsigned long long)value_1.bits[i] + (unsigned long long)value_2.bits[i];
+    temp += (unsigned long long)value_1.bits[i] +
+            (unsigned long long)value_2.bits[i];
     result->bits[i] = (unsigned)temp;
     temp >>= 32;
   }
   set_scale(result, get_scale(value_1));
   return (int)temp;
-} 
+}
 
-int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result)   {
+int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   int flag = 0;
-  // if (get_sign(value_1) && get_sign(value_2)) {
-  //   
-  // }
+  int sign_1 = get_sign(value_1);
+  int sign_2 = get_sign(value_2);
+  if (sign_1 && sign_2) {
+    set_sign(result);
+    flag = real_add(value_1, value_2, result);
+  } else if (!sign_1 && !sign_2) {
+    if (s21_is_less_abs(value_1, value_2)){
+      set_sign(result);
+      flag = real_sub(value_2, value_1, result);
+    }
+    else {
+      flag = real_sub(value_1, value_2, result);
+    }
+  } else {
+    if (sign_1 && !sign_2){
+      set_sign(result);
+    }
+    flag = real_add(value_1, value_2, result);
+  }
+  return flag;
+}
+
+int real_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   decimal_normalization(&value_1, &value_2);
   unsigned long long temp = 0;
   for (int i = 2; i >= 0; i--) {
-    temp += (unsigned long long)value_1.bits[i] - (unsigned long long)value_2.bits[i];
+    temp += (unsigned long long)value_1.bits[i] -
+            (unsigned long long)value_2.bits[i];
     result->bits[i] = (unsigned)temp;
     temp <<= 32;
   }
   set_scale(result, get_scale(value_1));
-  if (temp) flag = 1;
-
-  return flag;
-}
-
-int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result){
-  int return_value = 0;
-  s21_decimal zero = {0};
-  if (correct_decimal(value_1) || correct_decimal(value_2)){
-    return_value = 4;
-  }
-  else if (s21_is_equal(value_2, zero)){
-    return_value = 3;
-  }
-  else {
-    decimal_normalization(&value_1, &value_2);
-
-  }
-  return return_value;
+  return (int)temp;
 }
 
 void decimal_normalization(s21_decimal* value_1, s21_decimal* value_2) {
   int flag_overflow = 0;
   int scale_1 = get_scale(*value_1);
   int scale_2 = get_scale(*value_2);
+  int overcut[30] = {0};
+  // int i = 0;
   while (scale_1 != scale_2) {
     if (scale_1 > scale_2 && !flag_overflow) {
       flag_overflow = mult_by_10(value_2, scale_1, &scale_2);
@@ -108,9 +121,11 @@ void decimal_normalization(s21_decimal* value_1, s21_decimal* value_2) {
     if (scale_2 > scale_1 && !flag_overflow) {
       flag_overflow = mult_by_10(value_1, scale_2, &scale_1);
     } else if (scale_2 > scale_1 && flag_overflow) {
+      printf("%u", value_2->bits[0]);
       div_by_10(value_2, &scale_2, scale_1);
     }
   }
+  printf("\n%d\n", overcut[0]);
   set_scale(value_2, scale_2);
   set_scale(value_1, scale_1);
 }
@@ -123,8 +138,8 @@ bool mult_by_10(s21_decimal* decimal, int scale_big, int* scale_little) {
   top_decimal.bits[1] = 0b10011001100110011001100110011001;
   top_decimal.bits[2] = 0b00011001100110011001100110011001;
   top_decimal.bits[3] = decimal->bits[3];
-  for (;scale_big > *scale_little; (*scale_little)++) {
-    if (s21_is_less_or_equal(*decimal, top_decimal)) {
+  for (; scale_big > *scale_little; (*scale_little)++) {
+    if (s21_is_less_abs(*decimal, top_decimal) || s21_is_equal(*decimal, top_decimal)) {
       mult_by_num(decimal, 10);
     } else {
       flag = 1;
@@ -136,7 +151,7 @@ bool mult_by_10(s21_decimal* decimal, int scale_big, int* scale_little) {
 
 void mult_by_num(s21_decimal* decimal, int num) {
   unsigned long long temp = 0;
-  for (int i = 0; i < 3; i++) { 
+  for (int i = 0; i < 3; i++) {
     temp += (unsigned long long)decimal->bits[i] * (unsigned long long)num;
     decimal->bits[i] = (unsigned)temp;
     temp >>= 32;
@@ -145,7 +160,7 @@ void mult_by_num(s21_decimal* decimal, int num) {
 
 bool div_by_10(s21_decimal* decimal, int* scale_big, int scale_little) {
   bool flag = 0;
-  for (;*scale_big > scale_little; (*scale_big)--) {
+  for (; *scale_big > scale_little; (*scale_big)--) {
     div_by_num(decimal, 10);
   }
   return flag;

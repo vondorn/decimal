@@ -40,4 +40,5 @@ int s21_get_bit(s21_decimal d, int i);
 
 
 
+
 #endif  // S21_DECIMAL_HELPERS_H_

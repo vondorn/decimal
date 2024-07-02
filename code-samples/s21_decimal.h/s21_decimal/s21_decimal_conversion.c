@@ -5,7 +5,7 @@ int s21_from_int_to_decimal(int src, s21_decimal *dst) {
   for (int i = 0; i < 4; i++) dst->bits[i] = 0;
   dst->bits[3] = src & 0x80000000;
 
-  dst->bits[0] = (abs(src));
+  dst->bits[0] = (abs(src));  
   return 0;
 }
 
