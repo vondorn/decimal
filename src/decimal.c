@@ -136,30 +136,36 @@ void mult_by_num(s21_decimal* decimal, int num) {
 
 bool div_by_10(s21_decimal* decimal, int* scale_big, int scale_little) {
   bool flag = 0;
-  int flag_bank = 0;
   int overcut[30] = {0};
   int i = 0;
   for (; *scale_big > scale_little; (*scale_big)--, i++) {
     overcut[i] = mod_by_num(*decimal, 10);
     div_by_num(decimal, 10);
   }
-  if (overcut[--i] == 5) {
-    for (; i >= 0; --i) {
-      if (overcut[i]) {
+  real_round(decimal, overcut, i);
+  return flag;
+}
+
+int real_round(s21_decimal *value, int *overcut, int overcut_size) {
+  int flag_bank = 0;
+  if (overcut[--overcut_size] == 5) {
+    for (; overcut_size >= 0; --overcut_size) {
+      if (overcut[overcut_size]) {
         flag_bank = 2;
         break;
       }
     }
     if (flag_bank != 2) flag_bank = 1;
-  } else if (overcut[i] > 5) {
+  } else if (overcut[overcut_size] > 5) {
     flag_bank = 2;
   }
-  if ((flag_bank == 1 && !mod_by_num(*decimal, 2)) || flag_bank == 2) {
-    s21_decimal plusone = {{1, 0, 0, decimal->bits[3]}};
-    s21_add(*decimal, plusone, decimal);
+  if ((flag_bank == 1 && !mod_by_num(*value, 2)) || flag_bank == 2) {
+    s21_decimal plusone = {{1, 0, 0, value->bits[3]}};
+    s21_add(*value, plusone, value);
   }
-  return flag;
+  return flag_bank;
 }
+
 
 void div_by_num(s21_decimal* decimal, int num) {
   unsigned long long ost = 0;
@@ -173,22 +179,23 @@ void div_by_num(s21_decimal* decimal, int num) {
 }
 
 int s21_truncate(s21_decimal value, s21_decimal *result) {
-  s21_decimal bottom_decimal = {0};
-  bottom_decimal.bits[2] = 4294967295;
   int return_value;
-  if (!correct_decimal(value)){
-    decimal_normalization(&value, &bottom_decimal);
+  if (!correct_decimal(value) && result != NULL){
+    int scale = get_scale(value);
+    if (scale > 0){
+      for (int i = 0; scale > 0; scale--, i++) {
+        div_by_num(&value, 10);
+      }
+      set_scale(&value, 0);
+    }
     copy_decimal(result, value);
     return_value = 0;
-  }
-  else {
-    return_value = 1;
-  }
+  } else return_value = 1;
   return return_value;
 }
 
 int s21_floor(s21_decimal value, s21_decimal *result) {
-  if (!correct_decimal(value) && get_scale(value) > 0 && get_sign(value) && !s21_is_zero(value)){
+  if (!correct_decimal(value) && get_scale(value) > 0 && get_sign(value) && !s21_is_zero(value) && result != NULL){
     s21_decimal plusone = {0};
     plusone.bits[0] = 1;
     plusone.bits[3] = 0b10000000000000000000000000000000;
@@ -197,36 +204,18 @@ int s21_floor(s21_decimal value, s21_decimal *result) {
   return s21_truncate(value, result);
 }
 
-// int s21_round(s21_decimal value, s21_decimal *result) {
-//   int scale = get_scale(value);
-//   if (!correct_decimal(value) && scale > 0){
-//     if (get_sign(value) == 0){
-//       s21_decimal half = {0};
-//       s21_decimal temp = {0};
-//       s21_decimal afterpoint = {0};
-//       half.bits[0] = 0b110010;
-//       half.bits[3] = 0b100000000000000000; //0.5
-//       s21_truncate(value, &temp);
-//       s21_sub(value, temp, &afterpoint);
-//       print_decimal(afterpoint);
-//       if (s21_is_greater(afterpoint, half)){
-//         // result = value + 1
-//         s21_decimal plusone = {0};
-//         plusone.bits[0] = 1;
-//         s21_add(value, plusone, result);
-//         s21_truncate(*result, result);
-//       }
-//       else if (s21_is_less(temp, half)){
-//         copy_decimal(result, value);
-//       }
-//       print_decimal(temp);
-//       s21_truncate(temp, &temp);
-//       print_decimal(temp);
-//     }
-//   }
-
-//   return s21_truncate(*result, result);
-// }
+int s21_round(s21_decimal value, s21_decimal *result) {
+  int return_value = 0;
+  if(!correct_decimal(value) && result != NULL){
+    int scale = get_scale(value);
+    if (scale > 0){
+      div_by_10(&value, &scale, 0);
+      set_scale(&value, 0);
+    }
+    copy_decimal(result, value);
+  } else return_value = 1;
+  return return_value;
+}
 
 void copy_decimal(s21_decimal *dest, const s21_decimal src) {
   for(int i = 0; i <= 3; i++){
@@ -267,7 +256,6 @@ int s21_from_float_to_decimal(float src, s21_decimal *dst){
       dst->bits[i] = 0;
     }
     dst->bits[0] = total;
-    printf("%ld\n", total);
     dst->bits[3] = (6 << 16);
     if (src < 0) set_sign(dst);
   }

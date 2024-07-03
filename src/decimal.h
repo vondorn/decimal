@@ -25,6 +25,7 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
 int real_add(s21_decimal value_1, s21_decimal value_2, s21_decimal* result);
 int real_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal* result);
+int real_round(s21_decimal *value, int *overcut, int overcut_size);
 
 int real_add(s21_decimal value_1, s21_decimal value_2, s21_decimal* result);
 void print_decimal(s21_decimal decimal);
