@@ -4,10 +4,10 @@
 //   s21_decimal src1;
 //   float result = 0;
 //   float src2 = -364748;
-//   src1.bits[0] = 0b00000000000000000000000010101111;
+//   src1.bits[0] = 0b00000000000000000000000000000000;
 //   src1.bits[1] = 0b00000000000000000000000000000000;
 //   src1.bits[2] = 0b00000000000000000000000000000000;
-//   src1.bits[3] = 0b10000000000000100000000000000000;
+//   src1.bits[3] = 0b10000000000111000000000000000000;
 //   s21_from_decimal_to_float(src1, &result);
 //   print_decimal(src1);
 //   if (result >= 0){
@@ -236,7 +236,6 @@ int s21_from_float_to_decimal(float src, s21_decimal *dst){
   if (dst != NULL && src < MAXFLOAT && src != INFINITY){
     long int beforepoint = (long int)src;
     if (src < 0) beforepoint *= -1;
-    // printf("%ld\n", beforepoint);
     long int afterpoint = 0;
     bool flag = 0;
     char temp[75];
@@ -282,9 +281,10 @@ int s21_from_decimal_to_int(s21_decimal src, int *dst){
 
 int s21_from_decimal_to_float(s21_decimal src, float *dst){
   int return_value = 0;
-  if(dst != NULL && !correct_decimal(src) && !s21_is_zero(src)){
+  if(dst != NULL && !correct_decimal(src)){
     int scale = get_scale(src);
     int temp = 0;
+    *dst = 0;
     for (int i = scale; i > 0; i--) {
       temp = mod_by_num(src, 10);
       div_by_num(&src, 10);
@@ -297,8 +297,6 @@ int s21_from_decimal_to_float(s21_decimal src, float *dst){
     } 
     *dst += temp;
     if(get_sign(src)) *dst *= -1;
-  } else if (dst != NULL && !correct_decimal(src) && s21_is_zero(src)){
-    *dst = -0;
   } else return_value = 1;
   return return_value;
 }
