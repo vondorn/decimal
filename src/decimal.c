@@ -6,13 +6,13 @@ int main() {
   // origin.bits[1] = 0b11111000000111110000000110111111;
   // origin.bits[2] = 0b10111011010111111101000100011001;
   // origin.bits[3] = 0b00000000000010110000000000000000;
-  src1.bits[0] = 0b11101111010100000000000000000000;
-  src1.bits[1] = 0b00011010111001001101011011100010;
-  src1.bits[2] = 0b00000000000000000000000000011011;
-  src1.bits[3] = 0b00000000000000000000000000000000;
-  src2.bits[0] = 0b00000000000000000000000000000010;
+  src1.bits[0] = 0b11111111111111111111111111110110;
+  src1.bits[1] = 0b11111111111111111111111111111111;
+  src1.bits[2] = 0b00000000000000000000000000001001;
+  src1.bits[3] = 0b00000000000000010000000000000000;
+  src2.bits[0] = 0b00111001100010111010010101100010;
   src2.bits[1] = 0b00000000000000000000000000000000;
-  src2.bits[2] = 0b10000000000000000000000000000000;
+  src2.bits[2] = 0b00000000000000000000000000000000;
   src2.bits[3] = 0b00000000000000000000000000000000;
 
   print_decimal(src1);
@@ -129,6 +129,7 @@ void mult_by_num(s21_decimal decimal, s21_decimal* result, int num) {
   for (int i = 0; i < 3; i++) {
     temp += (unsigned long long)decimal.bits[i] * (unsigned long long)num;
     result->bits[i] = (unsigned)temp;
+    printf("%llu --- %u\n", temp, (unsigned)temp);
     temp >>= 32;
   }
 }
@@ -197,7 +198,7 @@ int s21_floor(s21_decimal value, s21_decimal *result) {
   if (!correct_decimal(value) && get_scale(value) > 0 && get_sign(value) && !s21_is_zero(value) && result != NULL){
     s21_decimal plusone = {0};
     plusone.bits[0] = 1;
-    plusone.bits[3] = 0b10000000000000000000000000000000;
+    plusone.bits[3] = NEGATIVE;
     s21_add(value, plusone, &value);
   }
   return s21_truncate(value, result);
@@ -288,13 +289,11 @@ int s21_from_decimal_to_float(s21_decimal src, float *dst){
       temp = mod_by_num(src, 10);
       div_by_num(&src, 10);
       *dst += temp * pow(10, -i);
-    } 
-    for (int i = 0; i < 29; i++) {
+    }     for (int i = 0; i < 29; i++) {
       temp = mod_by_num(src, 10);
       div_by_num(&src, 10);
       *dst += i == 0 ? temp : temp * pow(10, i);
-    } 
-    *dst += temp;
+    }     *dst += temp;
     if(get_sign(src)) *dst *= -1;
   } else return_value = 1;
   return return_value;
@@ -312,13 +311,16 @@ int mod_by_num(s21_decimal value, int integer) {
 
 int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   int flag = 0;
+  set_zero(result);
   if (s21_is_zero(value_2) || s21_is_zero(value_1))
     return flag;
-  set_zero(result);
+  set_scale(result, get_scale(value_1) + get_scale(value_2));
   if (s21_is_less_abs(value_1, value_2))
     swap_decimal(&value_1, &value_2);
-  real_mul(value_1, value_2, result);
+  flag = real_mul(value_1, value_2, result);
   // s21_decimal minusone = {{1, 0, 0, 0}};
+  if ((get_sign(value_1) + get_sign(value_2) == 1) && !flag)
+    set_sign(result);
   
   return flag;
 }
@@ -326,20 +328,22 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
 int real_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   s21_decimal temp;
   int flag = 0;
+  int count = 0;
   while (!s21_is_zero(value_2)) {
     int mul = mod_by_num(value_2, 10);
-    
-
-
-    div_by_10(&value_2, 1, 0);
+    printf("  %d \n", mul);
+    mult_by_num(value_1, &temp, mul);
+    for (int i = 0; i < count; i++) {
+      mult_by_num(temp, &temp, 10);
+    }
+    flag = real_add(temp, *result, result);
+    div_by_num(&value_2, 10);
+    // print_decimal(temp);
+    count++;
   }
+  if (flag) set_zero(result);
+
   return flag;
-}
-
-void copy_decimal(s21_decimal *dest, const s21_decimal src) {
-  for(int i = 0; i <= 3; i++){
-    dest->bits[i] = src.bits[i];
-  }
 }
 
 void set_zero(s21_decimal* decimal) {

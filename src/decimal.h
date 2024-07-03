@@ -58,7 +58,6 @@ bool div_by_10(s21_decimal* decimal, int* scale_big, int scale_little);
 int mod_by_num(s21_decimal value, int integer);
 
 void to_binary(unsigned n);
-void copy_decimal(s21_decimal *dest, const s21_decimal src);
 bool correct_decimal(s21_decimal value);
 
 int s21_floor(s21_decimal value, s21_decimal *result);
