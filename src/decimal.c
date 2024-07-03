@@ -1,30 +1,30 @@
 #include "decimal.h"
 
 // int main() {
-//   s21_decimal src1, src2, result, origin;
-//   origin.bits[0] = 0b00101100010111011001101101001111;
-//   origin.bits[1] = 0b11111000000111110000000110111111;
-//   origin.bits[2] = 0b10111011010111111101000100011001;
-//   origin.bits[3] = 0b00000000000010110000000000000000;
-//   src1.bits[0] = 0b10110001001110110100010111110100;
-//   src1.bits[1] = 0b00111000100000111010110010000001;
-//   src1.bits[2] = 0b00011001010110010101110000011000;
-//   src1.bits[3] = 0b10000000000100110000000000000000;
-//   src2.bits[0] = 0b11100110001001011001001101101001;
-//   src2.bits[1] = 0b00111000110110101110001010110100;
-//   src2.bits[2] = 0b10111011010111111101000100011110;
-//   src2.bits[3] = 0b10000000000010110000000000000000;
-
+//   s21_decimal src1;
+//   float result = 0;
+//   float src2 = -364748;
+//   src1.bits[0] = 0b00000000000000000000000010101111;
+//   src1.bits[1] = 0b00000000000000000000000000000000;
+//   src1.bits[2] = 0b00000000000000000000000000000000;
+//   src1.bits[3] = 0b10000000000000100000000000000000;
+//   s21_from_decimal_to_float(src1, &result);
 //   print_decimal(src1);
-//   print_decimal(src2);
-//   decimal_normalization(&src1, &src2);
-//   print_decimal(src1);
-//   print_decimal(src2);
+//   if (result >= 0){
+//     printf(" ");
+//   }
+//   printf("   %f\n", result);
+//   if (src2 >= 0){
+//     printf(" ");
+//   }
+//   // printf("   %f\n", src2);
+//   // int abc = *(int *)(void *)&result;
+//   // printf("aboba: %d\n", abc);
+//   // int aboba = -2147483648;
+//   // printf("0: %u\n", (unsigned)aboba);
 
-//   s21_sub(src1, src2, &result);
 //   // s21_sub(src1, src2, &result);
-//   print_decimal(result);
-//   print_decimal(origin);
+
 //   // printf("%d\n", get_scale(result));
 //   return 0;
 // }
@@ -271,7 +271,6 @@ int s21_from_float_to_decimal(float src, s21_decimal *dst){
 int s21_from_decimal_to_int(s21_decimal src, int *dst){
   int return_value = 0;
   bool flag = s21_truncate(src, &src);
-  
   if(dst != NULL && flag == 0 && (src.bits[1] == 0 && src.bits[2] == 0 && src.bits[0] < 2147483648)) {
     *dst = src.bits[0];
     if(get_sign(src)) *dst *= -1;
@@ -283,24 +282,24 @@ int s21_from_decimal_to_int(s21_decimal src, int *dst){
 
 int s21_from_decimal_to_float(s21_decimal src, float *dst){
   int return_value = 0;
-  if(dst != NULL && !correct_decimal(src)){
+  if(dst != NULL && !correct_decimal(src) && !s21_is_zero(src)){
     int scale = get_scale(src);
-    
-    // if (scale < 7){
-      int j = 1;
-      for(int i = scale; i > 0; i--){
-    //     *dst += mod_by_num(src, pow(10, j)) * pow(10, -j);
-        printf("%d ", mod_by_num(src, pow(10,j)));
-        j++;
-      }
-      printf("\n");
-    // }
-    // s21_truncate(src, &src);
-    // *dst += src.bits[0];
-    // dst = temp; 
-    printf("dst: %f\n", *dst);
-  }
-
+    int temp = 0;
+    for (int i = scale; i > 0; i--) {
+      temp = mod_by_num(src, 10);
+      div_by_num(&src, 10);
+      *dst += temp * pow(10, -i);
+    } 
+    for (int i = 0; i < 29; i++) {
+      temp = mod_by_num(src, 10);
+      div_by_num(&src, 10);
+      *dst += i == 0 ? temp : temp * pow(10, i);
+    } 
+    *dst += temp;
+    if(get_sign(src)) *dst *= -1;
+  } else if (dst != NULL && !correct_decimal(src) && s21_is_zero(src)){
+    *dst = -0;
+  } else return_value = 1;
   return return_value;
 }
 
