@@ -198,10 +198,10 @@ int real_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   int flag = 0;
   while (!s21_is_zero(value_2)) {
     int mul = mod_by_num(value_2, 10);
+    
 
 
-
-    div_by_num()
+    div_by_10(&value_2, 1, 0);
   }
   return flag;
 }
