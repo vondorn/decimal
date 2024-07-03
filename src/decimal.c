@@ -1,38 +1,40 @@
 #include "decimal.h"
 
-// int main() {
-//   s21_decimal src1, src2;
+int main() {
+  s21_decimal src1, src2;
   
-//   src1.bits[0] = 0b110010;
-//   src1.bits[1] = 0b11111110;
-//   src1.bits[2] = 0;
-//   src1.bits[3] = 0b100000000000000000;
+  src1.bits[0] = 0b11001011;
+  src1.bits[1] = 0;
+  src1.bits[2] = 0;
+  src1.bits[3] = 0b100000000000000000;
 
-//   src2.bits[0] = 0b00000000000000000000000000000001;
-//   src2.bits[1] = 0b00000000000000000000000000000000;
-//   src2.bits[2] = 0b00000000000000000000000000000000;
-//   src2.bits[3] = 0b00000000000000000000000000000000;
+  src2.bits[0] = 0b00000000000000000000000000000001;
+  src2.bits[1] = 0b00000000000000000000000000000000;
+  src2.bits[2] = 0b00000000000000000000000000000000;
+  src2.bits[3] = 0b00000000000000000000000000000000;
 
-//   // print_decimal(src1);
-//   // print_decimal(src2);
-//   // printf("%d - %d\n", get_scale(src1), get_scale(src2));
-//   // s21_add(src1, src2, &result);
-//   // print_decimal(result);
-//   // printf("%d\n", get_scale(result));
-//   s21_floor(src1, &src2);
-//   // s21_truncate(src1, &src2);
-//   // s21_round(src1, &src2);
-//   // s21_from_float_to_decimal(1.342020, &src2);
-//   // printf("%d\n", get_scale(src2));
-//   // int aboba = 0;
-//   // float abc = 2147483656;
-//   // s21_from_float_to_decimal(abc, &src2);
-//   // s21_from_decimal_to_int(src1, &aboba);
-//   // printf("aboba:%d\n", aboba);
-//   print_decimal(src1);
-//   print_decimal(src2);
-//   return 0;
-// }
+  // print_decimal(src1);
+  // print_decimal(src2);
+  // printf("%d - %d\n", get_scale(src1), get_scale(src2));
+  // s21_add(src1, src2, &result);
+  // print_decimal(result);
+  // printf("%d\n", get_scale(result));
+  float dst = 0;
+  s21_from_decimal_to_float(src1, &dst);
+  s21_truncate(src1, &src2);
+  // s21_truncate(src1, &src2);
+  // s21_round(src1, &src2);
+  // s21_from_float_to_decimal(1.342020, &src2);
+  // printf("%d\n", get_scale(src2));
+  // int aboba = 0;
+  // float abc = 2147483656;
+  // s21_from_float_to_decimal(abc, &src2);
+  // s21_from_decimal_to_int(src1, &aboba);
+  // printf("aboba:%d\n", aboba);
+  print_decimal(src1);
+  print_decimal(src2);
+  return 0;
+}
 
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   int flag = 0;
@@ -302,8 +304,20 @@ int s21_from_decimal_to_float(s21_decimal src, float *dst){
   int return_value = 0;
   if(dst != NULL && !correct_decimal(src)){
     int scale = get_scale(src);
-    if (scale < 7){
-    }
+    
+    // if (scale < 7){
+      int j = 1;
+      for(int i = scale; i > 0; i--){
+    //     *dst += mod_by_num(src, pow(10, j)) * pow(10, -j);
+        printf("%d ", mod_by_num(src, pow(10,j)));
+        j++;
+      }
+      printf("\n");
+    // }
+    // s21_truncate(src, &src);
+    // *dst += src.bits[0];
+    // dst = temp; 
+    printf("dst: %f\n", *dst);
   }
 
   return return_value;
