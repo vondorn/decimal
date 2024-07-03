@@ -5,7 +5,8 @@
 #include <string.h>
 #define NEGATIVE 0x80000000
 #define SCALE 0xff
-#define POSSIBLE 0x80ff0000 
+#define POSSIBLE 0x80ff0000
+#define STUPID 0x100000000
 
 typedef struct {
   unsigned bits[4];
@@ -14,8 +15,10 @@ typedef struct {
 bool get_sign(s21_decimal decimal);
 void set_sign(s21_decimal* decimal);
 int get_scale(s21_decimal decimal);
+int get_bit(s21_decimal decimal, int num);
 void set_scale(s21_decimal* decimal, int scale);
 void decimal_normalization(s21_decimal* value_1, s21_decimal* value_2);
+void decimal_inversion(s21_decimal decimal, s21_decimal* result);
 
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
