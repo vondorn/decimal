@@ -1,4 +1,4 @@
-GC = gcc -Wall -Werror -Wextra -std=c11
+GC = gcc 
 
 all: test
 

@@ -80,11 +80,21 @@ void print_decimal(s21_decimal decimal) {
 //   }
 // }
 
-int get_bit(s21_decimal decimal, int num) {
-  unsigned int mask = 1 << (num % 32);
-  int res = 0;
-  if (num <= 95 && num >= 0) {
-    res = decimal.bits[num / 32] & mask;
-  }
-  return res;
-}
+// int get_bit(s21_decimal decimal, int num) {
+//   unsigned int mask = 1 << (num % 32);
+//   int res = 0;
+//   if (num <= 95 && num >= 0) {
+//     res = decimal.bits[num / 32] & mask;
+//   }
+//   return res;
+// }
+
+// void decimal_inversion(s21_decimal decimal, s21_decimal* result) {
+//   for (int i = 0; i < 3; i++) result->bits[i] = ~decimal.bits[i];
+//   unsigned long long buf = 1ull;
+//   for (int i = 0; i < 3; i++) {
+//     buf += (unsigned long long)result->bits[i];
+//     result->bits[i] = (unsigned)buf;
+//     buf >>= 32;
+//   }
+// }
