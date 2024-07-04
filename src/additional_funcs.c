@@ -34,7 +34,6 @@ void decimal_normalization(s21_decimal* value_1, s21_decimal* value_2) {
   set_scale(value_1, scale_1);
 }
 
-
 void to_binary(unsigned n) {
   int binaryNum[32] = {0};
   int i = 0;
@@ -65,8 +64,7 @@ void print_decimal(s21_decimal decimal) {
     printf(" ");
   for (int i = 2; i >= 0; i--) {
     to_binary(decimal.bits[i]);
-    if (!i)
-      printf("\n");
+    if (!i) printf("\n");
   }
 }
 
@@ -80,7 +78,7 @@ void cut_zero(s21_decimal* decimal) {
 }
 
 void set_zero(s21_decimal* decimal) {
-  for(int i = 0; i <= 3; i++){
+  for (int i = 0; i <= 3; i++) {
     decimal->bits[i] = 0;
   }
 }
@@ -89,21 +87,21 @@ void swap_decimal(s21_decimal* value_1, s21_decimal* value_2) {
   s21_decimal* temp;
   temp = value_1;
   value_1 = value_2;
-  value_2 = value_1;
+  value_2 = temp;
 }
 
-int count_digits(s21_decimal decimal) {
-  int array_digits[30] = {0};
-  int i = 0;
-  while (!s21_is_zero(decimal)) {
-    array_digits[i++] = mod_by_num(decimal, 10);
-    div_by_num(&decimal, 10);
-  }
-  return i;
-}
+// int count_digits(s21_decimal decimal) {
+//   int array_digits[30] = {0};
+//   int i = 0;
+//   while (!s21_is_zero(decimal)) {
+//     array_digits[i++] = mod_by_num(decimal, 10);
+//     div_by_num(&decimal, 10);
+//   }
+//   return i;
+// }
 
-void copy_decimal(s21_decimal *dest, const s21_decimal src) {
-  for(int i = 0; i <= 3; i++){
+void copy_decimal(s21_decimal* dest, const s21_decimal src) {
+  for (int i = 0; i <= 3; i++) {
     dest->bits[i] = src.bits[i];
   }
 }
@@ -116,7 +114,7 @@ bool correct_decimal(s21_decimal value) {
   return return_value;
 }
 
-int real_round(s21_decimal *value, int *overcut, int overcut_size) {
+int real_round(s21_decimal* value, int* overcut, int overcut_size) {
   int flag_bank = 0;
   if (overcut[--overcut_size] == 5) {
     for (; overcut_size >= 0; --overcut_size) {
