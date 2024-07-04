@@ -7,8 +7,8 @@
 // } END_TEST
 
 START_TEST(s21_add1) {
-  s21_decimal src1, src2, origin, result;
-  int return_value, origin_return_value;
+  s21_decimal src1 = {0}, src2 = {0}, origin = {0}, result = {0};
+  int return_value = 0, origin_return_value = 0;
   // src1 = 96714065591710322362983.04
   // src2 = 2251937252639360
   src1.bits[0] = 0b00000000000110100001000001000000;
@@ -35,8 +35,8 @@ START_TEST(s21_add1) {
 END_TEST
 
 START_TEST(s21_add2) {
-  s21_decimal src1, src2, origin, result;
-  int return_value, origin_return_value;
+  s21_decimal src1 = {0}, src2 = {0}, origin = {0}, result = {0};
+  int return_value = 0, origin_return_value = 0;
   // src1 = -96714065591710322362983.04
   // src2 = -38685626229920070843236992
   src1.bits[0] = 0b00000000000110100001000001000000;
@@ -63,8 +63,8 @@ START_TEST(s21_add2) {
 END_TEST
 
 START_TEST(s21_add3) {
-  s21_decimal src1, src2, origin, result;
-  int return_value, origin_return_value;
+  s21_decimal src1 = {0}, src2 = {0}, origin = {0}, result = {0};
+  int return_value = 0, origin_return_value = 0;
   // src1 = -96714065591710322362983.04
   // src2 = 2251937252639360
   src1.bits[0] = 0b00000000000110100001000001000000;
@@ -91,8 +91,8 @@ START_TEST(s21_add3) {
 END_TEST
 
 START_TEST(s21_add4) {
-  s21_decimal src1, src2, origin, result;
-  int return_value, origin_return_value;
+  s21_decimal src1 = {0}, src2 = {0}, origin = {0}, result = {0};
+  int return_value = 0, origin_return_value = 0;
   // src1 = 96714065591710322362983.04
   // src2 = -38685626229920070843236992
   src1.bits[0] = 0b00000000000110100001000001000000;
@@ -119,8 +119,8 @@ START_TEST(s21_add4) {
 END_TEST
 
 START_TEST(s21_add5) {
-  s21_decimal src1, src2, origin, result;
-  int return_value, origin_return_value;
+  s21_decimal src1 = {0}, src2 = {0}, origin = {0}, result = {0};
+  int return_value = 0, origin_return_value = 0;
   // src1 = 396237526636913398311557571.20
   // src2 = 39614081257134420736172098176
   src1.bits[0] = 0b10000000000110100001000001000000;
@@ -147,8 +147,8 @@ START_TEST(s21_add5) {
 END_TEST
 
 START_TEST(s21_add6) {
-  s21_decimal src1, src2, origin, result;
-  int return_value, origin_return_value;
+  s21_decimal src1 = {0}, src2 = {0}, origin = {0}, result = {0};
+  int return_value = 0, origin_return_value = 0;
   // src1 = 39623752663691339831155757120
   // src2 = 39614081257134420736172098176
   src1.bits[0] = 0b10000000000110100001000001000000;
@@ -175,8 +175,8 @@ START_TEST(s21_add6) {
 END_TEST
 
 START_TEST(s21_add7) {
-  s21_decimal src1, src2, origin, result;
-  int return_value, origin_return_value;
+  s21_decimal src1 = {0}, src2 = {0}, origin = {0}, result = {0};
+  int return_value = 0, origin_return_value = 0;
   // src1 = -39623752663691339831155757120
   // src2 = -39614081257134420736172098176
   src1.bits[0] = 0b10000000000110100001000001000000;
@@ -203,8 +203,8 @@ START_TEST(s21_add7) {
 END_TEST
 
 START_TEST(s21_sub1) {
-  s21_decimal src1, src2, origin, result;
-  int return_value, origin_return_value;
+  s21_decimal src1 = {0}, src2 = {0}, origin = {0}, result = {0};
+  int return_value = 0, origin_return_value = 0;
   // src1 = 96714065591710322362983.04
   // src2 = 2251937252639360
   src1.bits[0] = 0b00000000000110100001000001000000;
@@ -259,8 +259,8 @@ START_TEST(s21_sub2) {
 END_TEST
 
 START_TEST(s21_sub3) {
-  s21_decimal src1, src2, origin, result;
-  int return_value, origin_return_value;
+  s21_decimal src1 = {0}, src2 = {0}, origin = {0}, result = {0};
+  int return_value = 0, origin_return_value = 0;
   // src1 = -96714065591710322362983.04
   // src2 = 2251937252639360
   src1.bits[0] = 0b00000000000110100001000001000000;
@@ -315,8 +315,8 @@ START_TEST(s21_sub4) {
 END_TEST
 
 START_TEST(s21_sub5) {
-  s21_decimal src1, src2, origin, result;
-  int return_value, origin_return_value;
+  s21_decimal src1 = {0}, src2 = {0}, origin = {0}, result = {0};
+  int return_value = 0, origin_return_value = 0;
   // src1 = 396237526636913398311557571.20
   // src2 = 39614081257134420736172098176
   src1.bits[0] = 0b10000000000110100001000001000000;
@@ -343,8 +343,8 @@ START_TEST(s21_sub5) {
 END_TEST
 
 START_TEST(s21_sub6) {
-  s21_decimal src1, src2, origin, result;
-  int return_value, origin_return_value;
+  s21_decimal src1 = {0}, src2 = {0}, origin = {0}, result = {0};
+  int return_value = 0, origin_return_value = 0;
   // src1 = 39623752663691339831155757120
   // src2 = 39614081257134420736172098176
   src1.bits[0] = 0b10000000000110100001000001000000;
@@ -371,8 +371,8 @@ START_TEST(s21_sub6) {
 END_TEST
 
 START_TEST(s21_sub7) {
-  s21_decimal src1, src2, origin, result;
-  int return_value, origin_return_value;
+  s21_decimal src1 = {0}, src2 = {0}, origin = {0}, result = {0};
+  int return_value = 0, origin_return_value = 0;
   // src1 = -39623752663691339831155757120
   // src2 = -39614081257134420736172098176
   src1.bits[0] = 0b10000000000110100001000001000000;
@@ -399,8 +399,8 @@ START_TEST(s21_sub7) {
 END_TEST
 
 START_TEST(s21_sub8) {
-  s21_decimal src1, src2, origin, result;
-  int return_value, origin_return_value;
+  s21_decimal src1 = {0}, src2 = {0}, origin = {0}, result = {0};
+  int return_value = 0, origin_return_value = 0;
   // src1 = -39623752663691339831155757120
   // src2 = 39614081257134420736172098176
   src1.bits[0] = 0b10000000000110100001000001000000;
@@ -427,8 +427,8 @@ START_TEST(s21_sub8) {
 END_TEST
 
 START_TEST(s21_mul1) {
-  s21_decimal src1, src2, origin, result;
-  int return_value, origin_return_value;
+  s21_decimal src1 = {0}, src2 = {0}, origin = {0}, result = {0};
+  int return_value = 0, origin_return_value = 0;
   // src1 = 96714065591710322362983.04
   // src2 = -2
   src1.bits[0] = 0b00000000000110100001000001000000;
@@ -455,8 +455,8 @@ START_TEST(s21_mul1) {
 END_TEST
 
 START_TEST(s21_mul2) {
-  s21_decimal src1, src2, origin, result;
-  int return_value, origin_return_value;
+  s21_decimal src1 = {0}, src2 = {0}, origin = {0}, result = {0};
+  int return_value = 0, origin_return_value = 0;
   // src1 = -2
   // src2 = 96714065591710322362983.04
   src1.bits[0] = 0b00000000000000000000000000000010;
@@ -483,8 +483,8 @@ START_TEST(s21_mul2) {
 END_TEST
 
 START_TEST(s21_mul3) {
-  s21_decimal src1, src2, origin, result;
-  int return_value, origin_return_value;
+  s21_decimal src1 = {0}, src2 = {0}, origin = {0}, result = {0};
+  int return_value = 0, origin_return_value = 0;
   // src1 = -2111
   // src2 = -11433423
   src1.bits[0] = 0b00000000000000000000100000111111;
@@ -511,8 +511,8 @@ START_TEST(s21_mul3) {
 END_TEST
 
 START_TEST(s21_mul4) {
-  s21_decimal src1, src2, origin, result;
-  int return_value, origin_return_value;
+  s21_decimal src1 = {0}, src2 = {0}, origin = {0}, result = {0};
+  int return_value = 0, origin_return_value = 0;
   // src1 = 2111
   // src2 = 11433423
   src1.bits[0] = 0b00000000000000000000100000111111;
