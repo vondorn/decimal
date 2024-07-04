@@ -1,6 +1,6 @@
 #include "s21_decimal.h"
 
-bool get_sign(s21_decimal decimal) {
+int get_sign(s21_decimal decimal) {
   return decimal.bits[3] & NEGATIVE ? 1 : 0;
 }
 
@@ -10,7 +10,7 @@ int get_scale(s21_decimal decimal) { return (decimal.bits[3] >> 16) & SCALE; }
 
 void set_scale(s21_decimal* decimal, int scale) {
   if (decimal != NULL) {
-    bool sign = get_sign(*decimal);
+    int sign = get_sign(*decimal);
     decimal->bits[3] = scale << 16;
     if (sign) set_sign(decimal);
     printf("%d \n", sign);
