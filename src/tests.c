@@ -427,7 +427,7 @@ START_TEST(s21_sub8) {
 END_TEST
 
 START_TEST(s21_mul1) {
-s21_decimal src1, src2, origin, result;
+  s21_decimal src1, src2, origin, result;
   int return_value, origin_return_value;
   // src1 = 96714065591710322362983.04
   // src2 = -2
@@ -455,7 +455,7 @@ s21_decimal src1, src2, origin, result;
 END_TEST
 
 START_TEST(s21_mul2) {
-s21_decimal src1, src2, origin, result;
+  s21_decimal src1, src2, origin, result;
   int return_value, origin_return_value;
   // src1 = -2
   // src2 = 96714065591710322362983.04
@@ -474,9 +474,62 @@ s21_decimal src1, src2, origin, result;
   origin.bits[1] = 0b00000000000100000000010000000000;
   origin.bits[2] = 0b00000000000100000000000000000000;
   origin.bits[3] = 0b10000000000000100000000000000000;
-  print_decimal(origin);
-  print_decimal(result);
-  printf("%d origin\n%d result\n", origin.bits[3], result.bits[3]);
+  ck_assert_int_eq(result.bits[0], origin.bits[0]);
+  ck_assert_int_eq(result.bits[1], origin.bits[1]);
+  ck_assert_int_eq(result.bits[2], origin.bits[2]);
+  ck_assert_int_eq(result.bits[3], origin.bits[3]);
+  ck_assert_int_eq(return_value, origin_return_value);
+}
+END_TEST
+
+START_TEST(s21_mul3) {
+  s21_decimal src1, src2, origin, result;
+  int return_value, origin_return_value;
+  // src1 = -2111
+  // src2 = -11433423
+  src1.bits[0] = 0b00000000000000000000100000111111;
+  src1.bits[1] = 0;
+  src1.bits[2] = 0;
+  src1.bits[3] = 0b10000000000000000000000000000000;
+  src2.bits[0] = 0b00000000101011100111010111001111;
+  src2.bits[1] = 0;
+  src2.bits[2] = 0;
+  src2.bits[3] = 0b10000000000000000000000000000000;
+  return_value = s21_mul(src1, src2, &result);
+  origin_return_value = 0;
+  // origin = 24135955953
+  origin.bits[0] = 0b10011110100111010111010111110001;
+  origin.bits[1] = 0b00000000000000000000000000000101;
+  origin.bits[2] = 0;
+  origin.bits[3] = 0;
+  ck_assert_int_eq(result.bits[0], origin.bits[0]);
+  ck_assert_int_eq(result.bits[1], origin.bits[1]);
+  ck_assert_int_eq(result.bits[2], origin.bits[2]);
+  ck_assert_int_eq(result.bits[3], origin.bits[3]);
+  ck_assert_int_eq(return_value, origin_return_value);
+}
+END_TEST
+
+START_TEST(s21_mul4) {
+  s21_decimal src1, src2, origin, result;
+  int return_value, origin_return_value;
+  // src1 = 2111
+  // src2 = 11433423
+  src1.bits[0] = 0b00000000000000000000100000111111;
+  src1.bits[1] = 0;
+  src1.bits[2] = 0;
+  src1.bits[3] = 0;
+  src2.bits[0] = 0b00000000101011100111010111001111;
+  src2.bits[1] = 0;
+  src2.bits[2] = 0;
+  src2.bits[3] = 0;
+  return_value = s21_mul(src1, src2, &result);
+  origin_return_value = 0;
+  // origin = 24135955953
+  origin.bits[0] = 0b10011110100111010111010111110001;
+  origin.bits[1] = 0b00000000000000000000000000000101;
+  origin.bits[2] = 0;
+  origin.bits[3] = 0;
   ck_assert_int_eq(result.bits[0], origin.bits[0]);
   ck_assert_int_eq(result.bits[1], origin.bits[1]);
   ck_assert_int_eq(result.bits[2], origin.bits[2]);
@@ -506,6 +559,8 @@ void srunner_arithmetics_tests(SRunner *sr) {
   tcase_add_test(TestCase1, s21_sub8);
   tcase_add_test(TestCase1, s21_mul1);
   tcase_add_test(TestCase1, s21_mul2);
+  tcase_add_test(TestCase1, s21_mul3);
+  tcase_add_test(TestCase1, s21_mul4);
   srunner_add_suite(sr, Suite1);
 }
 

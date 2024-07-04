@@ -22,8 +22,8 @@ else ifeq ("", "$(shell which lcov)")
 	$(error "Please install lcov")
 endif
 de:
-	@gcc $(FLAGS) arithmetic.c comparison.c conversion.c additional_funcs.c others.c -o s21_decimal
-	@./s21_decimal
+	@gcc $(FLAGS) arithmetic.c comparison.c conversion.c additional_funcs.c others.c -o s21_decimal.out
+	@./s21_decimal.out
 test: s21_decimal.a
 	clang-format -n $(CLANGFLAGS) $(CFILES)
 	gcc $(FLAGS) tests.c s21_decimal.a $(LIBCHECK) -o test.out
