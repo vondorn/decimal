@@ -1,7 +1,7 @@
 #include <check.h>
 #include <stdio.h>
 
-#include "decimal.h"
+#include "s21_decimal.h"
 
 START_TEST(s21_add_1) {
   s21_decimal src1, src2, origin, result;

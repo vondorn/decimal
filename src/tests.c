@@ -1,6 +1,6 @@
 #include <check.h>
 
-#include "decimal.h"
+#include "s21_decimal.h"
 
 // START_TEST(){
 

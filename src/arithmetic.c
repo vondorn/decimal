@@ -1,4 +1,4 @@
-#include "decimal.h"
+#include "s21_decimal.h"
 
 int main() {
   s21_decimal src1, src2, result, origin;
