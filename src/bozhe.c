@@ -61,8 +61,7 @@ void print_decimal(s21_decimal decimal) {
     printf(" ");
   for (int i = 2; i >= 0; i--) {
     to_binary(decimal.bits[i]);
-    if (!i)
-      printf("\n");
+    if (!i) printf("\n");
     // else
     //   printf(".");
   }
