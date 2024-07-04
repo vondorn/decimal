@@ -538,7 +538,6 @@ START_TEST(s21_mul4) {
 }
 END_TEST
 
-
 START_TEST(s21_equal_1) {
   s21_decimal src1, src2;
   int return_value, origin_return_value;
@@ -1299,6 +1298,150 @@ START_TEST(s21_greater_or_equal_4) {
 }
 END_TEST
 
+START_TEST(s21_dec_to_float_1) {
+  s21_decimal number;
+  // number = 2.0
+  number.bits[0] = 0b00000000000000000000000000010100;
+  number.bits[1] = 0b00000000000000000000000000000000;
+  number.bits[2] = 0b00000000000000000000000000000000;
+  number.bits[3] = 0b00000000000000010000000000000000;
+  int result_error = 0;
+  float check = 2;
+  float result = 0;
+  int my_error = s21_from_decimal_to_float(number, &result);
+  ck_assert_float_eq(check, result);
+  ck_assert_int_eq(result_error, my_error);
+}
+END_TEST
+
+START_TEST(s21_dec_to_float_2) {
+  s21_decimal number;
+  // number = -0.8
+  number.bits[0] = 0b00000000000000000000000000001000;
+  number.bits[1] = 0b00000000000000000000000000000000;
+  number.bits[2] = 0b00000000000000000000000000000000;
+  number.bits[3] = 0b10000000000000010000000000000000;
+  int result_error = 0;
+  float check = -0.8;
+  float result = 0;
+  int my_error = s21_from_decimal_to_float(number, &result);
+  ck_assert_float_eq(check, result);
+  ck_assert_int_eq(result_error, my_error);
+}
+END_TEST
+
+START_TEST(s21_dec_to_float_3) {
+  s21_decimal number;
+  // number = 0
+  number.bits[0] = 0b00000000000000000000000000000000;
+  number.bits[1] = 0b00000000000000000000000000000000;
+  number.bits[2] = 0b00000000000000000000000000000000;
+  number.bits[3] = 0b00000000000000000000000000000000;
+  int result_error = 0;
+  float check = 0;
+  float result = 0;
+  int my_error = s21_from_decimal_to_float(number, &result);
+  ck_assert_float_eq(check, result);
+  ck_assert_int_eq(result_error, my_error);
+}
+END_TEST
+
+START_TEST(s21_dec_to_float_4) {
+  s21_decimal number;
+  // number = 1
+  number.bits[0] = 0b00000000000000000000000000000001;
+  number.bits[1] = 0b00000000000000000000000000000000;
+  number.bits[2] = 0b00000000000000000000000000000000;
+  number.bits[3] = 0b00000000000000000000000000000000;
+  int result_error = 0;
+  float check = 1;
+  float result = 0;
+  int my_error = s21_from_decimal_to_float(number, &result);
+  ck_assert_float_eq(check, result);
+  ck_assert_int_eq(result_error, my_error);
+}
+END_TEST
+
+START_TEST(s21_dec_to_float_5) {
+  s21_decimal number;
+  // number = 0.0
+  number.bits[0] = 0b00000000000000000000000000000000;
+  number.bits[1] = 0b00000000000000000000000000000000;
+  number.bits[2] = 0b00000000000000000000000000000000;
+  number.bits[3] = 0b10000000000000010000000000000000;
+  int result_error = 0;
+  float check = 0;
+  float result = 0;
+  int my_error = s21_from_decimal_to_float(number, &result);
+  ck_assert_float_eq(check, result);
+  ck_assert_int_eq(result_error, my_error);
+}
+END_TEST
+
+START_TEST(s21_dec_to_float_6) {
+  s21_decimal number;
+  // number = -1.75
+  number.bits[0] = 0b00000000000000000000000010101111;
+  number.bits[1] = 0b00000000000000000000000000000000;
+  number.bits[2] = 0b00000000000000000000000000000000;
+  number.bits[3] = 0b10000000000000100000000000000000;
+  int result_error = 0;
+  float check = -1.75;
+  float result = 0;
+  int my_error = s21_from_decimal_to_float(number, &result);
+  ck_assert_float_eq(check, result);
+  ck_assert_int_eq(result_error, my_error);
+}
+END_TEST
+
+START_TEST(s21_dec_to_float_7) {
+  s21_decimal number;
+  // number = 6521
+  number.bits[0] = 0b00000000000000000001100101111001;
+  number.bits[1] = 0b00000000000000000000000000000000;
+  number.bits[2] = 0b00000000000000000000000000000000;
+  number.bits[3] = 0b00000000000000000000000000000000;
+  int result_error = 0;
+  float check = 6521;
+  float result = 0;
+  int my_error = s21_from_decimal_to_float(number, &result);
+  ck_assert_float_eq(check, result);
+  ck_assert_int_eq(result_error, my_error);
+}
+END_TEST
+
+START_TEST(s21_dec_to_float_8) {
+  s21_decimal number;
+  // number = 4
+  number.bits[0] = 0b00000000000000000000000000000100;
+  number.bits[1] = 0b00000000000000000000000000000000;
+  number.bits[2] = 0b00000000000000000000000000000000;
+  number.bits[3] = 0b00000000000000000000000000000000;
+  int result_error = 0;
+  float check = 4;
+  float result = 0;
+  int my_error = s21_from_decimal_to_float(number, &result);
+  ck_assert_float_eq(check, result);
+  ck_assert_int_eq(result_error, my_error);
+}
+END_TEST
+
+START_TEST(s21_dec_to_float_9) {
+  s21_decimal number;
+  // number = -364748
+  number.bits[0] = 0b00000000000001011001000011001100;
+  number.bits[1] = 0b00000000000000000000000000000000;
+  number.bits[2] = 0b00000000000000000000000000000000;
+  number.bits[3] = 0b10000000000000000000000000000000;
+  int result_error = 0;
+  float check = -364748;
+  float result = 0;
+  int my_error = s21_from_decimal_to_float(number, &result);
+  ck_assert_float_eq(check, result);
+  ck_assert_int_eq(result_error, my_error);
+}
+END_TEST
+
 void srunner_arithmetics_tests(SRunner *sr) {
   Suite *Suite1 = suite_create("arithmetics");
   TCase *TestCase1 = tcase_create("arithmetics");
@@ -1382,7 +1525,15 @@ void srunner_conversion_tests(SRunner *sr) {
   Suite *Suite1 = suite_create("conversion");
   TCase *TestCase1 = tcase_create("conversion");
   suite_add_tcase(Suite1, TestCase1);
-
+  tcase_add_test(TestCase1, s21_dec_to_float_1);
+  tcase_add_test(TestCase1, s21_dec_to_float_2);
+  tcase_add_test(TestCase1, s21_dec_to_float_3);
+  tcase_add_test(TestCase1, s21_dec_to_float_4);
+  tcase_add_test(TestCase1, s21_dec_to_float_5);
+  tcase_add_test(TestCase1, s21_dec_to_float_6);
+  tcase_add_test(TestCase1, s21_dec_to_float_7);
+  tcase_add_test(TestCase1, s21_dec_to_float_8);
+  tcase_add_test(TestCase1, s21_dec_to_float_9);
   srunner_add_suite(sr, Suite1);
 }
 
@@ -1400,7 +1551,7 @@ int main() {
 
   srunner_arithmetics_tests(sr);
   srunner_comparison_tests(sr);
-
+  srunner_conversion_tests(sr);
   srunner_set_fork_status(sr, CK_NOFORK);
   srunner_run_all(sr, CK_ENV);
 
