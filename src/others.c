@@ -1,4 +1,4 @@
-#include "decimal.h"
+#include "s21_decimal.h"
 
 int s21_floor(s21_decimal value, s21_decimal *result) {
   if (!correct_decimal(value) && get_scale(value) > 0 && get_sign(value) &&

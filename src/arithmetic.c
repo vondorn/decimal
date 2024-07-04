@@ -1,4 +1,4 @@
-#include "decimal.h"
+#include "s21_decimal.h"
 
 int main() {
   s21_decimal src1, src2, result, origin;
@@ -47,6 +47,8 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
       flag = real_sub(value_1, value_2, result);
     }
   }
+  if (flag && get_sign(*result)) flag = 2;
+  if (flag) set_zero(result);
   return flag;
 }
 

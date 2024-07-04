@@ -1,4 +1,4 @@
-#include "decimal.h"
+#include "s21_decimal.h"
 
 bool get_sign(s21_decimal decimal) {
   return decimal.bits[3] & NEGATIVE ? 1 : 0;
