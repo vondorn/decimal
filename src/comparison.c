@@ -40,8 +40,6 @@ int s21_is_less(s21_decimal value_1, s21_decimal value_2) {
   if (get_sign(value_1) && get_sign(value_2)) {
     res = res == 1 ? 0 : 1;
   }
-  // print_decimal(value_1);
-  // print_decimal(value_2);
   return res;
 }
 
