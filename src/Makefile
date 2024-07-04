@@ -2,7 +2,7 @@ FLAGS = -Wall -Werror -Wextra -std=c11
 GCOV_FLAGS = -fprofile-arcs -ftest-coverage
 CLANGFLAGS = --style=Google --verbose
 LIBCHECK = $(shell pkg-config --libs check)
-CFILES = decimal.c bozhe.c bolshe-menshe-libo-ravno.c tests.c
+CFILES = *.c
 ifeq ($(shell uname -r | grep WSL -o), WSL)
 	HTML_OPEN = @echo HTML report is in $(shell pwd)/report/index.html
 else ifeq ($(shell uname -s), Linux)
@@ -22,11 +22,11 @@ else ifeq ("", "$(shell which lcov)")
 	$(error "Please install lcov")
 endif
 de:
-	@gcc $(FLAGS) decimal.c bolshe-menshe-libo-ravno.c bozhe.c -o s21_decimal
+	@gcc $(FLAGS) arithmetic.c comparison.c conversion.c additional_funcs.c -o s21_decimal
 	@./s21_decimal
 test: s21_decimal.a
 	clang-format -n $(CLANGFLAGS) $(CFILES)
-	gcc $(FLAGS) tests.c s21_decimal.a $(LIBCHECK) -o test.out
+	gcc $(FLAGS) test.c s21_decimal.a $(LIBCHECK) -o test.out
 	./test.out
 gcov_report: check
 	@rm -rf report
@@ -38,10 +38,12 @@ gcov_report: check
 	@rm -f s21_decimal.info *.gcda *gcno gcov_report.out
 	$(HTML_OPEN)
 s21_decimal.a: check
-	gcc $(FLAGS) -c -o s21_decimal.o decimal.c
-	gcc $(FLAGS) -c -o bolshe-menshe-libo-ravno.o bolshe-menshe-libo-ravno.c
-	gcc $(FLAGS) -c -o bozhe.o bozhe.c
-	ar rcs s21_decimal.a s21_decimal.o bolshe-menshe-libo-ravno.o bozhe.o
+	gcc $(FLAGS) -c -o arithmetic.o arithmetic.c
+	gcc $(FLAGS) -c -o comparison.o comparison.c
+	gcc $(FLAGS) -c -o conversion.o conversion.c
+	gcc $(FLAGS) -c -o others.o others.c
+	gcc $(FLAGS) -c -o additional_funcs.o additional_funcs.c
+	ar rcs arithmetic.a others.o comparison.o conversion.o additional_funcs.o
 	@rm -f *.o
 clean:
 	rm -f *.a *.o *.info *.gcda *.gcno *.out
