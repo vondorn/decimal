@@ -6,24 +6,25 @@
 // // origin.bits[1] = 0b11111000000111110000000110111111;
 // // origin.bits[2] = 0b10111011010111111101000100011001;
 // // origin.bits[3] = 0b00000000000010110000000000000000;
-// src1.bits[0] = 0b11111111111111111111111111110110;
-// src1.bits[1] = 0b11111111111111111111111111111111;
-// src1.bits[2] = 0b00000000000000000000000000001001;
-// src1.bits[3] = 0b00000000000000010000000000000000;
-// src2.bits[0] = 0b00111001100010111010010101100010;
-// src2.bits[1] = 0b00000000000000000000000000000000;
-// src2.bits[2] = 0b00000000000000000000000000000000;
-// src2.bits[3] = 0b00000000000000000000000000000000;
-
+// src1.bits[0] = 0b00000000000110100001000001000000;
+// src1.bits[1] = 0b00000000000010000000001000000000;
+// src1.bits[2] = 0b00000000000010000000000000000000;
+// src1.bits[3] = 0b10000000000000100000000000000000;
+// src2.bits[0] = 0b00000000000000000000001010000000;
+// src2.bits[1] = 0b00000000000010000000000000100000;
+// src2.bits[2] = 0b00000000001000000000000000000000;
+// src2.bits[3] = 0b10000000000000000000000000000000;
+// s21_add(src1, src2, &result);
 // print_decimal(src1);
 // print_decimal(src2);
+// print_decimal(result);
 // // decimal_normalization(&src1, &src2);
 // // print_decimal(src1);
 // // print_decimal(src2);
 
-// s21_mul(src1, src2, &result);
+// // s21_mul(src1, src2, &result);
 // // s21_sub(src1, src2, &result);
-// print_decimal(result);
+// // print_decimal(result);
 // // printf("%d\n", get_scale(result));
 // return 0;
 // }
@@ -107,9 +108,9 @@ void decimal_normalization(s21_decimal* value_1, s21_decimal* value_2) {
 bool mult_by_10(s21_decimal* decimal, int scale_big, int* scale_little) {
   bool flag = 0;
   s21_decimal top_decimal;
-  top_decimal.bits[0] = 0b10011001100110011001100110011001;
-  top_decimal.bits[1] = 0b10011001100110011001100110011001;
-  top_decimal.bits[2] = 0b00011001100110011001100110011001;
+  top_decimal.bits[0] = 0x99999999;
+  top_decimal.bits[1] = 0x99999999;
+  top_decimal.bits[2] = 0x19999999;
   top_decimal.bits[3] = decimal->bits[3];
   for (; scale_big > *scale_little; (*scale_little)++) {
     if (s21_is_less_abs(*decimal, top_decimal) ||

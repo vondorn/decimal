@@ -1,8 +1,8 @@
-FLAGS = -Wall -Werror -Wextra # -pedantic
+FLAGS = -Wall -Werror -Wextra -std=c11
 GCOV_FLAGS = -fprofile-arcs -ftest-coverage
 CLANGFLAGS = --style=Google --verbose
 LIBCHECK = $(shell pkg-config --libs check)
-CFILES = decimal.c bozhe.c bolshe-menshe-libo-ravno.c test.c
+CFILES = decimal.c bozhe.c bolshe-menshe-libo-ravno.c tests.c
 ifeq ($(shell uname -r | grep WSL -o), WSL)
 	HTML_OPEN = @echo HTML report is in $(shell pwd)/report/index.html
 else ifeq ($(shell uname -s), Linux)
@@ -26,7 +26,7 @@ de:
 	@./s21_decimal
 test: s21_decimal.a
 	clang-format -n $(CLANGFLAGS) $(CFILES)
-	gcc $(FLAGS) test.c s21_decimal.a $(LIBCHECK) -o test.out
+	gcc $(FLAGS) tests.c s21_decimal.a $(LIBCHECK) -o test.out
 	./test.out
 gcov_report: check
 	@rm -rf report
