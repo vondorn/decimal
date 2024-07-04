@@ -30,7 +30,7 @@ int s21_from_float_to_decimal(float src, s21_decimal* dst);
 int s21_from_decimal_to_int(s21_decimal src, int* dst);
 int s21_from_decimal_to_float(s21_decimal src, float* dst);
 
-int get_sign(s21_decimal decimal);
+bool get_sign(s21_decimal decimal);
 void set_sign(s21_decimal* decimal);
 int get_scale(s21_decimal decimal);
 void set_scale(s21_decimal* decimal, int scale);

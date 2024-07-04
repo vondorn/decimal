@@ -287,8 +287,8 @@ START_TEST(s21_sub3) {
 END_TEST
 
 START_TEST(s21_sub4) {
-  s21_decimal src1, src2, origin, result;
-  int return_value, origin_return_value;
+  s21_decimal src1 = {0}, src2 = {0}, origin = {0}, result = {0};
+  int return_value = 0, origin_return_value = 0;
   // src1 = 96714065591710322362983.04
   // src2 = -38685626229920070843236992
   src1.bits[0] = 0b00000000000110100001000001000000;
