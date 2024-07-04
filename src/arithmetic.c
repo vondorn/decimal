@@ -161,7 +161,7 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
 }
 
 int real_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
-  s21_decimal temp;
+  s21_decimal temp = {0};
   int flag = 0;
   int count = 0;
   while (!s21_is_zero(value_2)) {
