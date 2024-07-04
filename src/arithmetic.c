@@ -156,7 +156,7 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   if (s21_is_less_abs(value_1, value_2)) swap_decimal(&value_1, &value_2);
   flag = real_mul(value_1, value_2, result);
   if ((get_sign(value_1) + get_sign(value_2) == 1) && !flag) set_sign(result);
-
+  set_scale(result, get_scale(value_1) + get_scale(value_2));
   return flag;
 }
 

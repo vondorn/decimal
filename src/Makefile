@@ -2,7 +2,7 @@ FLAGS = -Wall -Werror -Wextra -std=c11
 GCOV_FLAGS = -fprofile-arcs -ftest-coverage
 CLANGFLAGS = --style=Google --verbose
 LIBCHECK = $(shell pkg-config --libs check)
-CFILES = *.c
+CFILES = additional_funcs.c arithmetic.c comparison.c conversion.c others.c tests.c
 ifeq ($(shell uname -r | grep WSL -o), WSL)
 	HTML_OPEN = @echo HTML report is in $(shell pwd)/report/index.html
 else ifeq ($(shell uname -s), Linux)
@@ -22,8 +22,8 @@ else ifeq ("", "$(shell which lcov)")
 	$(error "Please install lcov")
 endif
 de:
-	@gcc $(FLAGS) arithmetic.c comparison.c conversion.c additional_funcs.c -o s21_decimal
-	@./s21_decimal
+	@gcc $(FLAGS) arithmetic.c comparison.c conversion.c additional_funcs.c others.c -o s21_decimal.out
+	@./s21_decimal.out
 test: s21_decimal.a
 	clang-format -n $(CLANGFLAGS) $(CFILES)
 	gcc $(FLAGS) tests.c s21_decimal.a $(LIBCHECK) -o test.out
