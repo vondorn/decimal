@@ -36,39 +36,39 @@ void decimal_normalization(s21_decimal* value_1, s21_decimal* value_2) {
   set_scale(value_1, scale_1);
 }
 
-void to_binary(unsigned n) {
-  int binaryNum[32] = {0};
-  int i = 0;
-  char binaryStr[32] = "";
+// void to_binary(unsigned n) {
+//   int binaryNum[32] = {0};
+//   int i = 0;
+//   char binaryStr[32] = "";
 
-  while (n > 0) {
-    binaryNum[i] = n % 2;
-    n = n / 2;
-    i++;
-  }
+//   while (n > 0) {
+//     binaryNum[i] = n % 2;
+//     n = n / 2;
+//     i++;
+//   }
 
-  for (int j = 31; j >= 0; j--) {
-    binaryStr[i - 1 - j] = binaryNum[j] + '0';
-  }
-  char buf[40];
-  sprintf(buf, "%32s", binaryStr);
-  for (int k = 0; k < 32; k++) {
-    if (buf[k] == ' ') buf[k] = '0';
-  }
-  printf("%s", buf);
-}
+//   for (int j = 31; j >= 0; j--) {
+//     binaryStr[i - 1 - j] = binaryNum[j] + '0';
+//   }
+//   char buf[40];
+//   sprintf(buf, "%32s", binaryStr);
+//   for (int k = 0; k < 32; k++) {
+//     if (buf[k] == ' ') buf[k] = '0';
+//   }
+//   printf("%s", buf);
+// }
 
-void print_decimal(s21_decimal decimal) {
-  printf("%d: ", get_scale(decimal));
-  if (get_sign(decimal))
-    printf("-");
-  else
-    printf(" ");
-  for (int i = 2; i >= 0; i--) {
-    to_binary(decimal.bits[i]);
-    if (!i) printf("\n");
-  }
-}
+// void print_decimal(s21_decimal decimal) {
+//   printf("%d: ", get_scale(decimal));
+//   if (get_sign(decimal))
+//     printf("-");
+//   else
+//     printf(" ");
+//   for (int i = 2; i >= 0; i--) {
+//     to_binary(decimal.bits[i]);
+//     if (!i) printf("\n");
+//   }
+// }
 
 void cut_zero(s21_decimal* decimal) {
   int scale = get_scale(*decimal);
