@@ -1,12 +1,16 @@
 #include "s21_decimal.h"
 
 int s21_from_int_to_decimal(int src, s21_decimal *dst) {
-  dst->bits[0] = abs(src);
-  for (int i = 1; i < 4; i++) {
-    dst->bits[i] = 0;
-  }
-  dst->bits[3] = src & NEGATIVE;
-  return 0;
+  int return_value = 0;
+  if (dst != NULL) {
+    dst->bits[0] = abs(src);
+    for (int i = 1; i < 4; i++) {
+      dst->bits[i] = 0;
+    }
+    dst->bits[3] = src & NEGATIVE;
+  } else
+    return_value = 1;
+  return return_value;
 }
 
 int s21_from_float_to_decimal(float src, s21_decimal *dst) {
