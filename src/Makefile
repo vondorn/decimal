@@ -26,7 +26,7 @@ de:
 	@./s21_decimal
 test: s21_decimal.a
 	clang-format -n $(CLANGFLAGS) $(CFILES)
-	gcc $(FLAGS) test.c s21_decimal.a $(LIBCHECK) -o test.out
+	gcc $(FLAGS) tests.c s21_decimal.a $(LIBCHECK) -o test.out
 	./test.out
 gcov_report: check
 	@rm -rf report
@@ -43,7 +43,7 @@ s21_decimal.a: check
 	gcc $(FLAGS) -c -o conversion.o conversion.c
 	gcc $(FLAGS) -c -o others.o others.c
 	gcc $(FLAGS) -c -o additional_funcs.o additional_funcs.c
-	ar rcs arithmetic.a others.o comparison.o conversion.o additional_funcs.o
+	ar rcs s21_decimal.a arithmetic.o others.o comparison.o conversion.o additional_funcs.o
 	@rm -f *.o
 clean:
 	rm -f *.a *.o *.info *.gcda *.gcno *.out

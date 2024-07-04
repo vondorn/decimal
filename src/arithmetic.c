@@ -1,33 +1,33 @@
 #include "s21_decimal.h"
 
-int main() {
-  s21_decimal src1, src2, result, origin;
-  origin.bits[0] = 0b00110000111000101100110101010110;
-  origin.bits[1] = 0b11011110111001111111001101111011;
-  origin.bits[2] = 0b01100000001010101111111001001101;
-  origin.bits[3] = 0b10000000000001100000000000000000;
-  src1.bits[0] = 0b10000010111000100101101011101101;
-  src1.bits[1] = 0b11111001111010000010010110101101;
-  src1.bits[2] = 0b10110000001111101111000010010100;
-  src1.bits[3] = 0b10000000000011100000000000000000;
-  src2.bits[0] = 0b00000000000000000000000000000100;
-  src2.bits[1] = 0b00000000000000000000000000000000;
-  src2.bits[2] = 0b00000000000000000000000000000000;
-  src2.bits[3] = 0b00000000000000000000000000000000;
+// int main() {
+//   s21_decimal src1, src2, result, origin;
+//   origin.bits[0] = 0b00110000111000101100110101010110;
+//   origin.bits[1] = 0b11011110111001111111001101111011;
+//   origin.bits[2] = 0b01100000001010101111111001001101;
+//   origin.bits[3] = 0b10000000000001100000000000000000;
+//   src1.bits[0] = 0b10000010111000100101101011101101;
+//   src1.bits[1] = 0b11111001111010000010010110101101;
+//   src1.bits[2] = 0b10110000001111101111000010010100;
+//   src1.bits[3] = 0b10000000000011100000000000000000;
+//   src2.bits[0] = 0b00000000000000000000000000000100;
+//   src2.bits[1] = 0b00000000000000000000000000000000;
+//   src2.bits[2] = 0b00000000000000000000000000000000;
+//   src2.bits[3] = 0b00000000000000000000000000000000;
 
-  // print_decimal(src1);
-  // print_decimal(src2);
-  // // decimal_normalization(&src1, &src2);
-  // print_decimal(src1);
-  // print_decimal(src2);
+//   // print_decimal(src1);
+//   // print_decimal(src2);
+//   // // decimal_normalization(&src1, &src2);
+//   // print_decimal(src1);
+//   // print_decimal(src2);
 
-  s21_mul(src1, src2, &result);
-  // s21_sub(src1, src2, &result);
-  print_decimal(result);
-  print_decimal(origin);
-  // printf("%d\n", get_scale(result));
-  return 0;
-}
+//   s21_mul(src1, src2, &result);
+//   // s21_sub(src1, src2, &result);
+//   print_decimal(result);
+//   print_decimal(origin);
+//   // printf("%d\n", get_scale(result));
+//   return 0;
+// }
 
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   int flag = 0;
