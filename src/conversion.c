@@ -15,7 +15,7 @@ int s21_from_int_to_decimal(int src, s21_decimal *dst) {
 
 int s21_from_float_to_decimal(float src, s21_decimal *dst) {
   int return_value = 0;
-  if (dst != NULL && src < MAXFLOAT && src != INFINITY) {
+  if (dst != NULL && src != INFINITY) {
     long int beforepoint = (long int)src;
     if (src < 0) beforepoint *= -1;
     long int afterpoint = 0;
