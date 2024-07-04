@@ -20,7 +20,7 @@ int s21_from_float_to_decimal(float src, s21_decimal *dst) {
     if (src < 0) beforepoint *= -1;
     long int afterpoint = 0;
     bool flag = 0;
-    char temp[75];
+    char temp[75] = " ";
     sprintf(temp, "%7f", src);
     int j = 5;
     for (int i = 0; j >= 0; i++) {
