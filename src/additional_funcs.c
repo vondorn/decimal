@@ -9,9 +9,11 @@ void set_sign(s21_decimal* decimal) { decimal->bits[3] |= NEGATIVE; }
 int get_scale(s21_decimal decimal) { return (decimal.bits[3] >> 16) & SCALE; }
 
 void set_scale(s21_decimal* decimal, int scale) {
-  bool sign = get_sign(*decimal);
-  decimal->bits[3] = scale << 16;
-  if (sign) set_sign(decimal);
+  if (decimal != NULL) {
+    bool sign = get_sign(*decimal);
+    decimal->bits[3] = scale << 16;
+    if (sign) set_sign(decimal);
+  }
 }
 
 void decimal_normalization(s21_decimal* value_1, s21_decimal* value_2) {
