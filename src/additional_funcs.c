@@ -13,6 +13,7 @@ void set_scale(s21_decimal* decimal, int scale) {
     bool sign = get_sign(*decimal);
     decimal->bits[3] = scale << 16;
     if (sign) set_sign(decimal);
+    printf("%d \n", sign);
   }
 }
 
