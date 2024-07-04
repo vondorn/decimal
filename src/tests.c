@@ -428,113 +428,190 @@ END_TEST
 
 START_TEST(s21_mul1) {
   s21_decimal src1, src2, origin, result;
-  int return_value, origin_return_value;
-  // src1 = 96714065591710322362983.04
-  // src2 = -2
-  src1.bits[0] = 0b00000000000110100001000001000000;
-  src1.bits[1] = 0b00000000000010000000001000000000;
-  src1.bits[2] = 0b00000000000010000000000000000000;
-  src1.bits[3] = 0b00000000000000100000000000000000;
-  src2.bits[0] = 0b00000000000000000000000000000010;
-  src2.bits[1] = 0;
-  src2.bits[2] = 0;
-  src2.bits[3] = 0b10000000000000000000000000000000;
-  return_value = s21_mul(src1, src2, &result);
-  origin_return_value = 0;
-  // origin = -193428131183420644725966.08
-  origin.bits[0] = 0b00000000001101000010000010000000;
-  origin.bits[1] = 0b00000000000100000000010000000000;
-  origin.bits[2] = 0b00000000000100000000000000000000;
-  origin.bits[3] = 0b10000000000000100000000000000000;
-  ck_assert_int_eq(result.bits[0], origin.bits[0]);
-  ck_assert_int_eq(result.bits[1], origin.bits[1]);
-  ck_assert_int_eq(result.bits[2], origin.bits[2]);
-  ck_assert_int_eq(result.bits[3], origin.bits[3]);
-  ck_assert_int_eq(return_value, origin_return_value);
+  int value_type_result, value_type_origin;
+  // src1 = 2;
+  // src2 = 3;
+  src1.bits[0] = 0b00000000000000000000000000000010;
+  src1.bits[1] = 0b00000000000000000000000000000000;
+  src1.bits[2] = 0b00000000000000000000000000000000;
+  src1.bits[3] = 0b00000000000000000000000000000000;
+  src2.bits[0] = 0b00000000000000000000000000000011;
+  src2.bits[1] = 0b00000000000000000000000000000000;
+  src2.bits[2] = 0b00000000000000000000000000000000;
+  src2.bits[3] = 0b00000000000000000000000000000000;
+  value_type_result = s21_mul(src1, src2, &result);
+  value_type_origin = 0;
+  origin.bits[0] = 0b00000000000000000000000000000110;
+  origin.bits[1] = 0b00000000000000000000000000000000;
+  origin.bits[2] = 0b00000000000000000000000000000000;
+  origin.bits[3] = 0b00000000000000000000000000000000;
+  ck_assert_int_eq(origin.bits[3], result.bits[3]);
+  ck_assert_int_eq(origin.bits[2], result.bits[2]);
+  ck_assert_int_eq(origin.bits[1], result.bits[1]);
+  ck_assert_int_eq(origin.bits[0], result.bits[0]);
+  ck_assert_int_eq(value_type_result, value_type_origin);
 }
 END_TEST
 
 START_TEST(s21_mul2) {
   s21_decimal src1, src2, origin, result;
-  int return_value, origin_return_value;
-  // src1 = -2
-  // src2 = 96714065591710322362983.04
-  src1.bits[0] = 0b00000000000000000000000000000010;
-  src1.bits[1] = 0;
-  src1.bits[2] = 0;
-  src1.bits[3] = 0b10000000000000000000000000000000;
-  src2.bits[0] = 0b00000000000110100001000001000000;
-  src2.bits[1] = 0b00000000000010000000001000000000;
-  src2.bits[2] = 0b00000000000010000000000000000000;
-  src2.bits[3] = 0b00000000000000100000000000000000;
-  return_value = s21_mul(src1, src2, &result);
-  origin_return_value = 0;
-  // origin = -193428131183420644725966.08
-  origin.bits[0] = 0b00000000001101000010000010000000;
-  origin.bits[1] = 0b00000000000100000000010000000000;
-  origin.bits[2] = 0b00000000000100000000000000000000;
-  origin.bits[3] = 0b10000000000000100000000000000000;
-  ck_assert_int_eq(result.bits[0], origin.bits[0]);
-  ck_assert_int_eq(result.bits[1], origin.bits[1]);
-  ck_assert_int_eq(result.bits[2], origin.bits[2]);
-  ck_assert_int_eq(result.bits[3], origin.bits[3]);
-  ck_assert_int_eq(return_value, origin_return_value);
+  int value_type_result, value_type_origin;
+  // src1 = 3;
+  // src2 = 2;
+  src1.bits[0] = 0b00000000000000000000000000000011;
+  src1.bits[1] = 0b00000000000000000000000000000000;
+  src1.bits[2] = 0b00000000000000000000000000000000;
+  src1.bits[3] = 0b00000000000000000000000000000000;
+  src2.bits[0] = 0b00000000000000000000000000000010;
+  src2.bits[1] = 0b00000000000000000000000000000000;
+  src2.bits[2] = 0b00000000000000000000000000000000;
+  src2.bits[3] = 0b00000000000000000000000000000000;
+  value_type_result = s21_mul(src1, src2, &result);
+  value_type_origin = 0;
+  origin.bits[0] = 0b00000000000000000000000000000110;
+  origin.bits[1] = 0b00000000000000000000000000000000;
+  origin.bits[2] = 0b00000000000000000000000000000000;
+  origin.bits[3] = 0b00000000000000000000000000000000;
+  ck_assert_int_eq(origin.bits[3], result.bits[3]);
+  ck_assert_int_eq(origin.bits[2], result.bits[2]);
+  ck_assert_int_eq(origin.bits[1], result.bits[1]);
+  ck_assert_int_eq(origin.bits[0], result.bits[0]);
+  ck_assert_int_eq(value_type_result, value_type_origin);
 }
 END_TEST
 
 START_TEST(s21_mul3) {
   s21_decimal src1, src2, origin, result;
-  int return_value, origin_return_value;
-  // src1 = -2111
-  // src2 = -11433423
-  src1.bits[0] = 0b00000000000000000000100000111111;
-  src1.bits[1] = 0;
-  src1.bits[2] = 0;
-  src1.bits[3] = 0b10000000000000000000000000000000;
-  src2.bits[0] = 0b00000000101011100111010111001111;
-  src2.bits[1] = 0;
-  src2.bits[2] = 0;
-  src2.bits[3] = 0b10000000000000000000000000000000;
-  return_value = s21_mul(src1, src2, &result);
-  origin_return_value = 0;
-  // origin = 24135955953
-  origin.bits[0] = 0b10011110100111010111010111110001;
-  origin.bits[1] = 0b00000000000000000000000000000101;
-  origin.bits[2] = 0;
-  origin.bits[3] = 0;
-  ck_assert_int_eq(result.bits[0], origin.bits[0]);
-  ck_assert_int_eq(result.bits[1], origin.bits[1]);
-  ck_assert_int_eq(result.bits[2], origin.bits[2]);
-  ck_assert_int_eq(result.bits[3], origin.bits[3]);
-  ck_assert_int_eq(return_value, origin_return_value);
+  int value_type_result, value_type_origin;
+  // src1 = 0;
+  // src2 = 3;
+  src1.bits[0] = 0b00000000000000000000000000000000;
+  src1.bits[1] = 0b00000000000000000000000000000000;
+  src1.bits[2] = 0b00000000000000000000000000000000;
+  src1.bits[3] = 0b00000000000000000000000000000000;
+  src2.bits[0] = 0b00000000000000000000000000000011;
+  src2.bits[1] = 0b00000000000000000000000000000000;
+  src2.bits[2] = 0b00000000000000000000000000000000;
+  src2.bits[3] = 0b00000000000000000000000000000000;
+  value_type_result = s21_mul(src1, src2, &result);
+  value_type_origin = 0;
+  origin.bits[0] = 0b00000000000000000000000000000000;
+  origin.bits[1] = 0b00000000000000000000000000000000;
+  origin.bits[2] = 0b00000000000000000000000000000000;
+  origin.bits[3] = 0b00000000000000000000000000000000;
+  ck_assert_int_eq(origin.bits[3], result.bits[3]);
+  ck_assert_int_eq(origin.bits[2], result.bits[2]);
+  ck_assert_int_eq(origin.bits[1], result.bits[1]);
+  ck_assert_int_eq(origin.bits[0], result.bits[0]);
+  ck_assert_int_eq(value_type_result, value_type_origin);
 }
 END_TEST
 
 START_TEST(s21_mul4) {
   s21_decimal src1, src2, origin, result;
-  int return_value, origin_return_value;
-  // src1 = 2111
-  // src2 = 11433423
-  src1.bits[0] = 0b00000000000000000000100000111111;
-  src1.bits[1] = 0;
-  src1.bits[2] = 0;
-  src1.bits[3] = 0;
-  src2.bits[0] = 0b00000000101011100111010111001111;
-  src2.bits[1] = 0;
-  src2.bits[2] = 0;
-  src2.bits[3] = 0;
-  return_value = s21_mul(src1, src2, &result);
-  origin_return_value = 0;
-  // origin = 24135955953
-  origin.bits[0] = 0b10011110100111010111010111110001;
-  origin.bits[1] = 0b00000000000000000000000000000101;
-  origin.bits[2] = 0;
-  origin.bits[3] = 0;
-  ck_assert_int_eq(result.bits[0], origin.bits[0]);
-  ck_assert_int_eq(result.bits[1], origin.bits[1]);
-  ck_assert_int_eq(result.bits[2], origin.bits[2]);
-  ck_assert_int_eq(result.bits[3], origin.bits[3]);
-  ck_assert_int_eq(return_value, origin_return_value);
+  int value_type_result, value_type_origin;
+  // src1 = 18446744073709551615.0;
+  // src2 = 965453154;
+  src1.bits[0] = 0b11111111111111111111111111110110;
+  src1.bits[1] = 0b11111111111111111111111111111111;
+  src1.bits[2] = 0b00000000000000000000000000001001;
+  src1.bits[3] = 0b00000000000000010000000000000000;
+  src2.bits[0] = 0b00111001100010111010010101100010;
+  src2.bits[1] = 0b00000000000000000000000000000000;
+  src2.bits[2] = 0b00000000000000000000000000000000;
+  src2.bits[3] = 0b00000000000000000000000000000000;
+  value_type_result = s21_mul(src1, src2, &result);
+  value_type_origin = 0;
+  origin.bits[0] = 0b11000110011101000101101010011110;
+  origin.bits[1] = 0b11111111111111111111111111111111;
+  origin.bits[2] = 0b00111001100010111010010101100001;
+  origin.bits[3] = 0b00000000000000000000000000000000;
+  ck_assert_int_eq(origin.bits[3], result.bits[3]);
+  ck_assert_int_eq(origin.bits[2], result.bits[2]);
+  ck_assert_int_eq(origin.bits[1], result.bits[1]);
+  ck_assert_int_eq(origin.bits[0], result.bits[0]);
+  ck_assert_int_eq(value_type_result, value_type_origin);
+}
+END_TEST
+
+START_TEST(s21_mul6) {
+  s21_decimal src1, src2, origin, result;
+  int value_type_result, value_type_origin;
+  // src1 = -12345677.987654345678987654346;
+  // src2 = 87654323456.9876545678987653;
+  src1.bits[0] = 0b10010001000010101111010011001010;
+  src1.bits[1] = 0b11000000010001011101010111110010;
+  src1.bits[2] = 0b00100111111001000001101100000000;
+  src1.bits[3] = 0b10000000000101010000000000000000;
+  src2.bits[0] = 0b00010001110011011101000110000101;
+  src2.bits[1] = 0b11110101101111000110111111000000;
+  src2.bits[2] = 0b00000010110101010000111100111111;
+  src2.bits[3] = 0b00000000000100000000000000000000;
+  value_type_result = s21_mul(src1, src2, &result);
+  value_type_origin = 0;
+  origin.bits[0] = 0b00000001010010011001000011101110;
+  origin.bits[1] = 0b10101010100001010100111110001111;
+  origin.bits[2] = 0b00100010111101110101101000011010;
+  origin.bits[3] = 0b10000000000010100000000000000000;
+  ck_assert_int_eq(origin.bits[3], result.bits[3]);
+  ck_assert_int_eq(origin.bits[2], result.bits[2]);
+  ck_assert_int_eq(origin.bits[1], result.bits[1]);
+  ck_assert_int_eq(origin.bits[0], result.bits[0]);
+  ck_assert_int_eq(value_type_result, value_type_origin);
+}
+END_TEST
+
+START_TEST(s21_mul7) {
+  s21_decimal src1, src2, origin, result;
+  int value_type_result, value_type_origin;
+  // src1 = -12345677.987654345678987654346;
+  // src2 = -87654323456.9876545678987653;
+  src1.bits[0] = 0b10010001000010101111010011001010;
+  src1.bits[1] = 0b11000000010001011101010111110010;
+  src1.bits[2] = 0b00100111111001000001101100000000;
+  src1.bits[3] = 0b10000000000101010000000000000000;
+  src2.bits[0] = 0b00010001110011011101000110000101;
+  src2.bits[1] = 0b11110101101111000110111111000000;
+  src2.bits[2] = 0b00000010110101010000111100111111;
+  src2.bits[3] = 0b10000000000100000000000000000000;
+  value_type_result = s21_mul(src1, src2, &result);
+  value_type_origin = 0;
+  origin.bits[0] = 0b00000001010010011001000011101110;
+  origin.bits[1] = 0b10101010100001010100111110001111;
+  origin.bits[2] = 0b00100010111101110101101000011010;
+  origin.bits[3] = 0b00000000000010100000000000000000;
+  ck_assert_int_eq(origin.bits[3], result.bits[3]);
+  ck_assert_int_eq(origin.bits[2], result.bits[2]);
+  ck_assert_int_eq(origin.bits[1], result.bits[1]);
+  ck_assert_int_eq(origin.bits[0], result.bits[0]);
+  ck_assert_int_eq(value_type_result, value_type_origin);
+}
+END_TEST
+
+START_TEST(s21_mul8) {
+  s21_decimal src1, src2, origin, result;
+  int value_type_result, value_type_origin;
+  // src1 = -0.77545545454546589781;
+  // src2 = 87894515154546456456;
+  src1.bits[0] = 0b10101100001010000001100001010101;
+  src1.bits[1] = 0b00110100001010010001111010111100;
+  src1.bits[2] = 0b00000000000000000000000000000100;
+  src1.bits[3] = 0b10000000000101000000000000000000;
+  src2.bits[0] = 0b00010011111011011111011110001000;
+  src2.bits[1] = 0b11000011110010000000101111011001;
+  src2.bits[2] = 0b00000000000000000000000000000100;
+  src2.bits[3] = 0b00000000000000000000000000000000;
+  value_type_result = s21_mul(src1, src2, &result);
+  value_type_origin = 0;
+  origin.bits[0] = 0b00101100010001000110001011111110;
+  origin.bits[1] = 0b10001111111010010000010001010010;
+  origin.bits[2] = 0b11011100001110110011010101110011;
+  origin.bits[3] = 0b10000000000010010000000000000000;
+  ck_assert_int_eq(origin.bits[3], result.bits[3]);
+  ck_assert_int_eq(origin.bits[2], result.bits[2]);
+  ck_assert_int_eq(origin.bits[1], result.bits[1]);
+  ck_assert_int_eq(origin.bits[0], result.bits[0]);
+  ck_assert_int_eq(value_type_result, value_type_origin);
 }
 END_TEST
 
@@ -1893,6 +1970,9 @@ void srunner_arithmetics_tests(SRunner *sr) {
   tcase_add_test(TestCase1, s21_mul2);
   tcase_add_test(TestCase1, s21_mul3);
   tcase_add_test(TestCase1, s21_mul4);
+  tcase_add_test(TestCase1, s21_mul6);
+  tcase_add_test(TestCase1, s21_mul7);
+  tcase_add_test(TestCase1, s21_mul8);
   srunner_add_suite(sr, Suite1);
 }
 
