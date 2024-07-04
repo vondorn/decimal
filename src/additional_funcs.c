@@ -10,10 +10,10 @@ int get_scale(s21_decimal decimal) { return (decimal.bits[3] >> 16) & SCALE; }
 
 void set_scale(s21_decimal* decimal, int scale) {
   if (decimal != NULL) {
-    int sign = get_sign(*decimal);
+    int sign = 0;
+    sign = get_sign(*decimal);
     decimal->bits[3] = scale << 16;
-    if (sign) set_sign(decimal);
-    printf("%d \n", sign);
+    if (sign == 1) set_sign(decimal);
   }
 }
 
