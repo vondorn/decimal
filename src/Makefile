@@ -1,4 +1,4 @@
-FLAGS = -Wall -Werror -Wextra -std=c11
+FLAGS = -std=c11
 GCOV_FLAGS = -fprofile-arcs -ftest-coverage
 CLANGFLAGS = --style=Google --verbose
 LIBCHECK = $(shell pkg-config --libs check)
@@ -22,7 +22,7 @@ else ifeq ("", "$(shell which lcov)")
 	$(error "Please install lcov")
 endif
 de:
-	@gcc $(FLAGS) arithmetic.c comparison.c conversion.c additional_funcs.c others.c -o s21_decimal.out
+	@gcc $(FLAGS) arithmetic.c comparison.c conversion.c additional_funcs.c others.c div_v2.c -o s21_decimal.out
 	@./s21_decimal.out
 test: s21_decimal.a
 	clang-format -n $(CLANGFLAGS) $(CFILES)

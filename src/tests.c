@@ -2364,7 +2364,6 @@ START_TEST(s21_round_8) {
 }
 END_TEST
 
-
 START_TEST(s21_round_9) {
   s21_decimal src, origin, result;
   // src = 4.5;
