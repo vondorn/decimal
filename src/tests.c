@@ -2180,6 +2180,14 @@ START_TEST(s21_truncate_8) {
 }
 END_TEST
 
+START_TEST(s21_truncate_9) {
+  s21_decimal src1 = {0}, *result = NULL;
+  int check = s21_truncate(src1, result);
+  int check_origin = 1;
+  ck_assert_int_eq(check, check_origin);
+}
+END_TEST
+
 START_TEST(s21_round_1) {
   s21_decimal src, origin, result;
   // src = 5.0;
@@ -2314,11 +2322,11 @@ END_TEST
 
 START_TEST(s21_round_7) {
   s21_decimal src, origin, result;
-  // src = 652.34631;
-  src.bits[0] = 0b00000011111000110110011011000111;
+  // src = 652.346310;
+  src.bits[0] = 0b0100110111000100000001111000110;
   src.bits[1] = 0b00000000000000000000000000000000;
   src.bits[2] = 0b00000000000000000000000000000000;
-  src.bits[3] = 0b00000000000001010000000000000000;
+  src.bits[3] = 0b00000000000001100000000000000000;
   int check = s21_round(src, &result);
   int check_origin = 0;
   // origin = 652;
@@ -2352,6 +2360,37 @@ START_TEST(s21_round_8) {
   ck_assert_int_eq(origin.bits[2], result.bits[2]);
   ck_assert_int_eq(origin.bits[1], result.bits[1]);
   ck_assert_int_eq(origin.bits[0], result.bits[0]);
+  ck_assert_int_eq(check, check_origin);
+}
+END_TEST
+
+
+START_TEST(s21_round_9) {
+  s21_decimal src, origin, result;
+  // src = 4.5;
+  src.bits[0] = 0b00000000000000000000000000101101;
+  src.bits[1] = 0b00000000000000000000000000000000;
+  src.bits[2] = 0b00000000000000000000000000000000;
+  src.bits[3] = 0b00000000000000010000000000000000;
+  int check = s21_round(src, &result);
+  int check_origin = 0;
+  // origin = 5;
+  origin.bits[0] = 0b00000000000000000000000000000101;
+  origin.bits[1] = 0b00000000000000000000000000000000;
+  origin.bits[2] = 0b00000000000000000000000000000000;
+  origin.bits[3] = 0b00000000000000000000000000000000;
+  ck_assert_int_eq(origin.bits[3], result.bits[3]);
+  ck_assert_int_eq(origin.bits[2], result.bits[2]);
+  ck_assert_int_eq(origin.bits[1], result.bits[1]);
+  ck_assert_int_eq(origin.bits[0], result.bits[0]);
+  ck_assert_int_eq(check, check_origin);
+}
+END_TEST
+
+START_TEST(s21_round_10) {
+  s21_decimal src = {0}, *result = NULL;
+  int check = s21_round(src, result);
+  int check_origin = 1;
   ck_assert_int_eq(check, check_origin);
 }
 END_TEST
@@ -2678,6 +2717,7 @@ void srunner_other_funcs_tests(SRunner *sr) {
   tcase_add_test(TestCase1, s21_truncate_6);
   tcase_add_test(TestCase1, s21_truncate_7);
   tcase_add_test(TestCase1, s21_truncate_8);
+  tcase_add_test(TestCase1, s21_truncate_9);
 
   tcase_add_test(TestCase1, s21_round_1);
   tcase_add_test(TestCase1, s21_round_2);
@@ -2687,6 +2727,8 @@ void srunner_other_funcs_tests(SRunner *sr) {
   tcase_add_test(TestCase1, s21_round_6);
   tcase_add_test(TestCase1, s21_round_7);
   tcase_add_test(TestCase1, s21_round_8);
+  tcase_add_test(TestCase1, s21_round_9);
+  tcase_add_test(TestCase1, s21_round_10);
 
   tcase_add_test(TestCase1, s21_floor_1);
   tcase_add_test(TestCase1, s21_floor_2);
