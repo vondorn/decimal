@@ -6,13 +6,18 @@
 #define NEGATIVE 0x80000000
 #define SCALE 0xff
 #define POSSIBLE 0x80ff0000
-#define STUPID 0x100000000
+#define MAX 0xffffffff
 
 typedef struct {
   unsigned bits[4];
 } s21_decimal;
 
+typedef struct {
+  unsigned bits[8];
+} s21_long_decimal;
+
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal* result);
+
 int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal* result);
 int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result);
 
@@ -60,6 +65,30 @@ int mod_by_num(s21_decimal value, int integer);
 
 void to_binary(unsigned n);
 bool correct_decimal(s21_decimal value);
+
+void convert_to_long(s21_decimal decimal, s21_long_decimal* long_decimal);
+int convert_from_long(s21_decimal* decimal, s21_long_decimal long_decimal);
+void print_long_decimal(s21_long_decimal decimal);
+int get_scale_long(s21_long_decimal decimal);
+void div_by_num_long(s21_long_decimal* decimal, int num);
+bool div_by_10_long(s21_long_decimal* decimal, int* scale_big,
+                    int scale_little);
+int mod_by_num_long(s21_long_decimal value, int integer);
+void set_scale_long(s21_long_decimal* decimal, int scale);
+int count_digits_long(s21_long_decimal decimal);
+int s21_is_zero_long(s21_long_decimal value);
+int s21_is_less_long(s21_long_decimal value_1, s21_long_decimal value_2);
+int real_add_long(s21_long_decimal value_1, s21_long_decimal value_2,
+                  s21_long_decimal* result);
+void mult_by_num_long(s21_long_decimal decimal, s21_long_decimal* result,
+                      int num);
+int real_round_long(s21_long_decimal* value, int* overcut, int overcut_size);
+int real_sub_long(s21_long_decimal value_1, s21_long_decimal value_2,
+                  s21_long_decimal* result);
+int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal* result);
+void real_div(s21_long_decimal value_1, s21_long_decimal value_2,
+              s21_long_decimal* result);
+void copy_long_decimal(s21_long_decimal* dest, const s21_long_decimal src);
 
 /*
 10000000000000000000000000000
