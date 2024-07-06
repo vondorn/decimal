@@ -65,7 +65,7 @@ int mod_by_num(s21_decimal value, int integer);
 
 void to_binary(unsigned n);
 bool correct_decimal(s21_decimal value);
-10000000000000000000000000000
+// 10000000000000000000000000000
 void convert_to_long(s21_decimal decimal, s21_long_decimal* long_decimal);
 int convert_from_long(s21_decimal* decimal, s21_long_decimal long_decimal);
 void print_long_decimal(s21_long_decimal decimal);
