@@ -87,7 +87,7 @@ int real_sub_long(s21_long_decimal value_1, s21_long_decimal value_2, s21_long_d
 int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal* result);
 void real_div(s21_long_decimal value_1, s21_long_decimal value_2, s21_long_decimal* result);
 void copy_long_decimal(s21_long_decimal* dest, const s21_long_decimal src);
-
+void decimal_normalization_long(s21_long_decimal* value_1, s21_long_decimal* value_2);
 /*
 10000000000000000000000000000
 00000000000000000000000000001
