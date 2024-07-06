@@ -65,7 +65,7 @@ int mod_by_num(s21_decimal value, int integer);
 
 void to_binary(unsigned n);
 bool correct_decimal(s21_decimal value);
-
+10000000000000000000000000000
 void convert_to_long(s21_decimal decimal, s21_long_decimal* long_decimal);
 int convert_from_long(s21_decimal* decimal, s21_long_decimal long_decimal);
 void print_long_decimal(s21_long_decimal decimal);
@@ -78,7 +78,7 @@ void set_scale_long(s21_long_decimal* decimal, int scale);
 int count_digits_long(s21_long_decimal decimal);
 int s21_is_zero_long(s21_long_decimal value);
 int s21_is_less_long(s21_long_decimal value_1, s21_long_decimal value_2);
-int real_add_long(s21_long_decimal value_1, s21_long_decimal value_2,
+void real_add_long(s21_long_decimal value_1, s21_long_decimal value_2,
                   s21_long_decimal* result);
 void mult_by_num_long(s21_long_decimal decimal, s21_long_decimal* result,
                       int num);
@@ -88,6 +88,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal* result);
 void real_div(s21_long_decimal value_1, s21_long_decimal value_2, s21_long_decimal* result);
 void copy_long_decimal(s21_long_decimal* dest, const s21_long_decimal src);
 void decimal_normalization_long(s21_long_decimal* value_1, s21_long_decimal* value_2);
+int s21_is_greater_long(s21_long_decimal value_1, s21_long_decimal value_2);
 /*
 10000000000000000000000000000
 00000000000000000000000000001
