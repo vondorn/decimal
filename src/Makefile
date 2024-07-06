@@ -1,4 +1,4 @@
-FLAGS = -std=c11
+FLAGS = -Wall -Werror -Wextra -std=c11
 GCOV_FLAGS = -fprofile-arcs -ftest-coverage
 CLANGFLAGS = --style=Google --verbose
 LIBCHECK = $(shell pkg-config --libs check)

@@ -2,7 +2,7 @@
 
 #include "s21_decimal.h"
 
-int main(){
+int main() {
   s21_decimal value_1, value_2;
   value_1.bits[0] = 0b10011100010000;
   value_1.bits[1] = 0b00000000000000000000000000000000;
@@ -12,64 +12,94 @@ int main(){
   value_2.bits[1] = 0b00000000000000000000000000000000;
   value_2.bits[2] = 0b00000000000000000000000000000000;
   value_2.bits[3] = 0b00000000000000000000000000000000;
+
+  s21_decimal result = {0};
+  s21_div(value_1, value_2, &result);
+}
+
+int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   s21_long_decimal value_1long, value_2long;
   convert_to_long(value_1, &value_1long);
   convert_to_long(value_2, &value_2long);
   s21_long_decimal to_use1 = value_1long;
   s21_long_decimal to_use2 = value_2long;
-  double k = 1, i = -1, j = 0;
-   double result = 0;
-   int aaa = 1;
-  while(!s21_is_zero_long(value_2long)){
+  s21_decimal temp_result = {0};
+  int i = -1;
+  int j = 0;
+  double result1 = 0;
+  int aaa = 1;
+  while (!s21_is_zero_long(value_2long)) {
+    int ten = 0;
     i = -1, j = 0;
     copy_long_decimal(&to_use2, value_2long);
     copy_long_decimal(&to_use1, value_1long);
-    if (!s21_is_zero_long(value_1long) && !s21_is_less_long(value_1long, value_2long)){
-      while(!s21_is_less_long(value_1long, to_use2)){
+    if (!s21_is_zero_long(value_1long) &&
+        !s21_is_less_long(value_1long, value_2long)) {
+      while (!s21_is_less_long(value_1long, to_use2)) {
         mult_by_num_long(to_use2, &to_use2, 10);
         i++;
       }
       if (i >= 0) div_by_num_long(&to_use2, 10);
       s21_long_decimal temp_to_use2 = to_use2;
-      while(!s21_is_less_long(value_1long, to_use2)){
+      while (!s21_is_less_long(value_1long, to_use2)) {
         real_add_long(to_use2, temp_to_use2, &to_use2);
         j++;
       }
       if (j > 0) real_sub_long(to_use2, temp_to_use2, &to_use2);
       real_sub_long(value_1long, to_use2, &value_1long);
+      s21_from_int_to_decimal(j, &temp_result);
+      mult_by_10(&temp_result, i, &ten);
+      print_decimal(temp_result);
+      real_add(*result, temp_result, result);
+      // printf("i: %lf\n", i);
+      // printf("j: %lf\n", j);
       i = pow(10, i);
-      j = j * i;
-      printf("i: %lf\n", i);
-      printf("j: %lf\n", j);
-      result += j;
-    } else if (!s21_is_zero_long(value_1long) && s21_is_less_long(value_1long, value_2long) && aaa < 10){
-      while(s21_is_less_long(to_use1, value_2long)){
+      // i хранит количество цифр которое нужно отступить начиная от запятой, т.е.
+      // если i = 3 и число, которое необходимо записать равно 5 то получится
+      // 500
+      j = j * i; 
+      // j это число, которое необходимо записать в ячейку i
+      result1 += j;
+    } else if (!s21_is_zero_long(value_1long) &&
+               s21_is_less_long(value_1long, value_2long) && aaa < 10) {
+      while (s21_is_less_long(to_use1, value_2long)) {
         mult_by_num_long(to_use1, &to_use1, 10);
-        // i++;
       }
-      while(!s21_is_less_long(to_use1, to_use2)){
+      while (!s21_is_less_long(to_use1, to_use2)) {
         mult_by_num_long(to_use2, &to_use2, 10);
-        i--;
+        i++;
+        printf("OK");
       }
-      print_long_decimal(to_use2);
       if (i <= 0) div_by_num_long(&to_use2, 10);
-      print_long_decimal(to_use1);
       s21_long_decimal temp_to_use2 = to_use2;
-      while(!s21_is_less_long(to_use1, to_use2)){
+      while (!s21_is_less_long(to_use1, to_use2)) {
         real_add_long(to_use2, temp_to_use2, &to_use2);
         j++;
       }
       if (j > 0) real_sub_long(to_use2, temp_to_use2, &to_use2);
       real_sub_long(to_use1, to_use2, &to_use1);
-      if (i == 0) i *= 0.1;
+      if (i == 0) i = 1;
       copy_long_decimal(&value_1long, to_use1);
+
+      printf("-i: %d\n", i);
+      printf("-j: %d\n", j);
+
+      s21_from_int_to_decimal(j, &temp_result);
+      set_scale(&temp_result, aaa);
+      print_decimal(temp_result);
+      real_add(*result, temp_result, result);
+
+
       i = pow(10, -aaa);
-      printf("-i: %lf\n", i);
       j = j * i;
-      result += j;
-      printf("-j: %lf\n", j);
+      result1 += j;
+      // s21_decimal temp_result = {0}
+      // s21_add(*result, temp_result, result)
       aaa++;
-    } else break;
+    } else
+      break;
   }
-  printf("result: %lf", result);
+  printf("result: %lf\n", result1);
+  print_decimal(*result);
+  return 0;
 }
