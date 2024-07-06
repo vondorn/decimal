@@ -26,7 +26,7 @@ de:
 	@./s21_decimal.out
 test: s21_decimal.a
 	clang-format -n $(CLANGFLAGS) $(CFILES)
-	gcc $(FLAGS) test.c s21_decimal.a $(LIBCHECK) -o test.out
+	gcc $(FLAGS) tests.c s21_decimal.a $(LIBCHECK) -o test.out
 	./test.out
 gcov_report: check
 	@rm -rf report

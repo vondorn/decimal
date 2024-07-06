@@ -2,11 +2,15 @@
 
 // int main() {
 //   s21_decimal result, src1, src2;
-//   src1.bits[0] = 0b00000000000000000000000000000010;
+//   // origin.bits[0] = 0b10010010000001100111100010100101;
+//   // origin.bits[1] = 0b10001011011010100100100011011111;
+//   // origin.bits[2] = 0b00011100010100011001001100010001;
+//   // origin.bits[3] = 0b00000000000100010000000000000000;
+//   src1.bits[0] = 0b00000000000000000000000000000001;
 //   src1.bits[1] = 0b00000000000000000000000000000000;
 //   src1.bits[2] = 0b00000000000000000000000000000000;
-//   src1.bits[3] = 0b00000000000000000000000000000000;
-//   src2.bits[0] = 0b00000000000000000000000000000001;
+//   src1.bits[3] = 0b00000000000000010000000000000000;
+//   src2.bits[0] = 0b1010;
 //   src2.bits[1] = 0b00000000000000000000000000000000;
 //   src2.bits[2] = 0b00000000000000000000000000000000;
 //   src2.bits[3] = 0b00000000000000000000000000000000;
@@ -28,6 +32,7 @@
 
 //   s21_div(src1, src2, &result);
 //   // s21_sub(src1, src2, &result);
+//   printf("\n\n");
 //   print_decimal(result);
 //   // convert_to_long(origin, &example);
 //   // convert_from_long(&src, example);
@@ -47,6 +52,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
     convert_to_long(value_2, &long_val_2);
     real_div(long_val_1, long_val_2, &result_long);
     flag = convert_from_long(result, result_long);
+    if ((get_sign(value_1) + get_sign(value_2) == 1) && !flag) set_sign(result);
   }
   return flag;
 }
@@ -55,9 +61,23 @@ void real_div(s21_long_decimal value_1, s21_long_decimal value_2, s21_long_decim
   s21_long_decimal digit = {0};
   int count = 0, result_scale = 0;
   s21_long_decimal temp, temp_2;
+  // if (s21_is_less_long(value_1, value_2)) {
+  //   while ()
+  // }
   while (!s21_is_zero_long(value_1) && count < 40) {
-    copy_long_decimal(&temp, value_2);
     int re = 0, we = 1, qe = 0;
+    count++;
+    if (!result_scale && !s21_is_greater_long(value_1, value_2))
+      result_scale = count+1;
+    while (!s21_is_greater_long(value_1, value_2) && !s21_is_zero_long(value_1)) {
+       mult_by_num_long(value_1, &value_1, 10);
+       qe++;
+       if (qe > 1) {
+        count++;
+        mult_by_num_long(*result, result, 10);
+       }
+    }
+    copy_long_decimal(&temp, value_2);
     while(s21_is_less_long(temp, value_1)) {
       mult_by_num_long(temp, &temp, 10);
       re++;
@@ -79,19 +99,8 @@ void real_div(s21_long_decimal value_1, s21_long_decimal value_2, s21_long_decim
     digit.bits[0] = we;
     mult_by_num_long(*result, result, 10);
     real_add_long(digit, *result, result);
-    count++;
-    if (!result_scale && s21_is_less_long(value_1, value_2))
-      result_scale = count;
-    while (s21_is_less_long(value_1, value_2)) {
-       mult_by_num_long(value_1, &value_1, 10);
-       qe++;
-       if (qe > 1) {
-        count++;
-        mult_by_num_long(*result, result, 10);
-       }
-    }
   }
-  set_scale_long(result, count-result_scale);
+  set_scale_long(result, count-result_scale+get_scale_long(value_1)-get_scale_long(value_2));
 }
 
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
@@ -104,19 +113,19 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   decimal_normalization_long(&long_val_1, &long_val_2);
   if (sign_1 && sign_2) {
     sign_flag = 1;
-    flag = real_add_long(long_val_1, long_val_2, &result_long);
+    real_add_long(long_val_1, long_val_2, &result_long);
   } else if (!sign_1 && !sign_2) {
-    flag = real_add_long(long_val_1, long_val_2, &result_long);
+    real_add_long(long_val_1, long_val_2, &result_long);
   } else {
     if (s21_is_less_long(long_val_1, long_val_2)) {
       if (!sign_1 && sign_2) sign_flag = 1;
-      flag = real_sub_long(long_val_2, long_val_1, &result_long);
+      real_sub_long(long_val_2, long_val_1, &result_long);
     } else {
       if (sign_1 && !sign_2) sign_flag = 1;
-      flag = real_sub_long(long_val_1, long_val_2, &result_long);
+      real_sub_long(long_val_1, long_val_2, &result_long);
     }
   }
-  convert_from_long(result, result_long);
+  flag = convert_from_long(result, result_long);
   if (sign_flag) set_sign(result);
   if (flag && sign_flag) flag = 2;
   if (flag) set_zero(result);
@@ -281,6 +290,8 @@ int convert_from_long(s21_decimal* decimal, s21_long_decimal long_decimal) {
   for (int i = 0; i < 3; i++) {
     decimal->bits[i] = long_decimal.bits[i];
   }
+  if (long_decimal.bits[6])
+    flag = 1;
   decimal->bits[3] = scale_long << 16;
   return flag;
 }
@@ -344,7 +355,18 @@ int s21_is_less_long(s21_long_decimal value_1, s21_long_decimal value_2) {
   return res;
 }
 
-int real_add_long(s21_long_decimal value_1, s21_long_decimal value_2,
+int s21_is_greater_long(s21_long_decimal value_1, s21_long_decimal value_2) {
+  int res = 0;
+  for (int i = 6; i >= 0; i--) {
+    if (value_1.bits[i] > value_2.bits[i]) {
+      res = 1;
+    } else if (value_1.bits[i] < value_2.bits[i])
+      break;
+  }
+  return res;
+}
+
+void real_add_long(s21_long_decimal value_1, s21_long_decimal value_2,
                   s21_long_decimal* result) {
   // decimal_normalization(&value_1, &value_2);
   unsigned long long temp = 0;
@@ -355,7 +377,6 @@ int real_add_long(s21_long_decimal value_1, s21_long_decimal value_2,
     temp >>= 32;
   }
   set_scale_long(result, get_scale_long(value_1));
-  return temp ? 1 : 0;
 }
 
 void mult_by_num_long(s21_long_decimal decimal, s21_long_decimal* result,
