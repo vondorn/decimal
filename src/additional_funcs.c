@@ -143,3 +143,20 @@ void print_long_decimal(s21_long_decimal decimal) {
     if (!i) printf("\n");
   }
 }
+
+void decimal_normalization_long(s21_long_decimal* value_1, s21_long_decimal* value_2) {
+
+  int scale_1 = get_scale_long(*value_1);
+  int scale_2 = get_scale_long(*value_2);
+  while (scale_1 != scale_2) {
+    if (scale_2 > scale_1) {
+      mult_by_num_long(*value_1, value_1, 10);
+      scale_1++;
+    } else {
+      mult_by_num_long(*value_2, value_2, 10);
+      scale_2++;
+    }
+  }
+  set_scale_long(value_2, scale_2);
+  set_scale_long(value_1, scale_1);
+}
