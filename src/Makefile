@@ -1,15 +1,16 @@
 FLAGS = -Wall -Werror -Wextra -std=c11
 GCOV_FLAGS = -fprofile-arcs -ftest-coverage
-CLANGFLAGS = --style=Google --verbose
+CLANG_FLAGS = --style=Google --verbose
 LIBCHECK = $(shell pkg-config --libs check)
 CFILES = additional_funcs.c arithmetic.c comparison.c conversion.c others.c tests.c
+REPORT_DIR = /report/index.html
 
 ifeq ($(shell uname -r | grep WSL -o), WSL)
-	HTML_OPEN = @echo HTML report is in $(shell pwd)/report/index.html
+	HTML_OPEN = @echo HTML report is in $(shell pwd)$(REPORT_DIR)
 else ifeq ($(shell uname -s), Linux)
-	HTML_OPEN = @xdg-open ./report/index.html
+	HTML_OPEN = @xdg-open .$(REPORT_DIR)
 else
-	HTML_OPEN = @open ./report/index.html
+	HTML_OPEN = @open .$(REPORT_DIR)
 endif
 
 all: test
@@ -22,16 +23,13 @@ else ifeq ("", "$(LIBCHECK)")
 else ifeq ("", "$(shell which lcov)")
 	$(error "Please install lcov")
 endif
-de:
-	@gcc  arithmetic.c comparison.c conversion.c additional_funcs.c others.c -o s21_decimal.out
-	@./s21_decimal.out
-test: s21_decimal.a
-	clang-format -n $(CLANGFLAGS) $(CFILES)
-	gcc $(FLAGS) tests.c s21_decimal.a $(LIBCHECK) -o test.out
+test: check s21_decimal.a 
+	clang-format -n $(CLANG_FLAGS) $(CFILES)
+	gcc $(FLAGS) tests.c s21_decimal.a -o test.out $(LIBCHECK)
 	./test.out
 gcov_report: check
 	@rm -rf report
-	clang-format -n $(CLANGFLAGS) $(CFILES)
+	clang-format -n $(CLANG_FLAGS) $(CFILES)
 	gcc $(FLAGS) $(GCOV_FLAGS) $(CFILES) -o gcov_report.out $(LIBCHECK)
 	./gcov_report.out
 	lcov -t "s21_decimal" -o s21_decimal.info -c -d . -q
@@ -39,7 +37,7 @@ gcov_report: check
 	@rm -f s21_decimal.info *.gcda *gcno gcov_report.out
 	@rm -f *.o
 	$(HTML_OPEN)
-s21_decimal.a: check
+s21_decimal.a:
 	gcc $(FLAGS) -c -o arithmetic.o arithmetic.c
 	gcc $(FLAGS) -c -o comparison.o comparison.c
 	gcc $(FLAGS) -c -o conversion.o conversion.c
@@ -53,9 +51,9 @@ clean:
 rebuild: clean all
 
 style_check:
-	clang-format -n $(CLANGFLAGS) $(CFILES)
+	clang-format -n $(CLANG_FLAGS) $(CFILES)
 style_fix:
-	clang-format -i $(CLANGFLAGS) *.c *.h
+	clang-format -i $(CLANG_FLAGS) *.c *.h
 
 valgrind: clean test
 	valgrind --tool=memcheck --leak-check=yes ./test.out
