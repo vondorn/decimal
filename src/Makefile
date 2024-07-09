@@ -3,6 +3,7 @@ GCOV_FLAGS = -fprofile-arcs -ftest-coverage
 CLANGFLAGS = --style=Google --verbose
 LIBCHECK = $(shell pkg-config --libs check)
 CFILES = additional_funcs.c arithmetic.c comparison.c conversion.c others.c tests.c
+
 ifeq ($(shell uname -r | grep WSL -o), WSL)
 	HTML_OPEN = @echo HTML report is in $(shell pwd)/report/index.html
 else ifeq ($(shell uname -s), Linux)
@@ -36,6 +37,7 @@ gcov_report: check
 	lcov -t "s21_decimal" -o s21_decimal.info -c -d . -q
 	genhtml -o report s21_decimal.info -q
 	@rm -f s21_decimal.info *.gcda *gcno gcov_report.out
+	@rm -f *.o
 	$(HTML_OPEN)
 s21_decimal.a: check
 	gcc $(FLAGS) -c -o arithmetic.o arithmetic.c
@@ -57,5 +59,3 @@ style_fix:
 
 valgrind: clean test
 	valgrind --tool=memcheck --leak-check=yes ./test.out
-
-# nado dobavit "srunner_set_fork_status(SuiteRun, CK_NOFORK)" v testi

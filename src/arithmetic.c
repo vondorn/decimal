@@ -1,42 +1,44 @@
 #include "s21_decimal.h"
 
-int main() {
-  s21_decimal result, src1, src2, origin;
-  origin.bits[0] = 0b00101100010001000110001011111110;
-  origin.bits[1] = 0b10001111111010010000010001010010;
-  origin.bits[2] = 0b11011100001110110011010101110011;
-  origin.bits[3] = 0b10000000000010010000000000000000;
-  src1.bits[0] = 0b10101100001010000001100001010101;
-  src1.bits[1] = 0b00110100001010010001111010111100;
-  src1.bits[2] = 0b00000000000000000000000000000100;
-  src1.bits[3] = 0b10000000000101000000000000000000;
-  src2.bits[0] = 0b00010011111011011111011110001000;
-  src2.bits[1] = 0b11000011110010000000101111011001;
-  src2.bits[2] = 0b00000000000000000000000000000100;
-  src2.bits[3] = 0b00000000000000000000000000000000;
-  print_decimal(src1);
-  print_decimal(src2);
-  printf("\n\n");
-  // decimal_normalization(&src1, &src2);
-  // print_decimal(src1);
-  // print_decimal(src2);
+// int main() {
+//   s21_decimal result, src1, src2, origin;
+//   origin.bits[0] = 0b00101100010001000110001011111110;
+//   origin.bits[1] = 0b10001111111010010000010001010010;
+//   origin.bits[2] = 0b11011100001110110011010101110011;
+//   origin.bits[3] = 0b10000000000010010000000000000000;
+//   src1.bits[0] = 0b10101100001010000001100001010101;
+//   src1.bits[1] = 0b00110100001010010001111010111100;
+//   src1.bits[2] = 0b00000000000000000000000000000100;
+//   src1.bits[3] = 0b10000000000101000000000000000000;
+//   src2.bits[0] = 0b00010011111011011111011110001000;
+//   src2.bits[1] = 0b11000011110010000000101111011001;
+//   src2.bits[2] = 0b00000000000000000000000000000100;
+//   src2.bits[3] = 0b00000000000000000000000000000000;
+//   print_decimal(src1);
+//   print_decimal(src2);
+//   printf("\n\n");
+//   // decimal_normalization(&src1, &src2);
+//   // print_decimal(src1);
+//   // print_decimal(src2);
 
-  s21_div(src1, src2, &result);
-  // s21_sub(src1, src2, &result);
-  printf("\n\n");
-  print_decimal(result);
-  print_decimal(origin);
-  // convert_to_long(origin, &example);
-  // convert_from_long(&src, example);
-  // print_long_decimal(example);
-  // print_decimal(src);
-  // printf("%d\n", get_scale(result));
-  return 0;
-}
+//   s21_div(src1, src2, &result);
+//   // s21_sub(src1, src2, &result);
+//   printf("\n\n");
+//   print_decimal(result);
+//   print_decimal(origin);
+//   // convert_to_long(origin, &example);
+//   // convert_from_long(&src, example);
+//   // print_long_decimal(example);
+//   // print_decimal(src);
+//   // printf("%d\n", get_scale(result));
+//   return 0;
+// }
 
 int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   int flag = 0;
-  if (s21_is_zero(value_2)) {
+  if (result == NULL) {
+    flag = 4;
+  } else if (s21_is_zero(value_2)) {
     flag = 3;
   } else if (!s21_is_zero(value_1)) {
     s21_long_decimal long_val_1, long_val_2, result_long = {0};
@@ -44,12 +46,15 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
     convert_to_long(value_2, &long_val_2);
     real_div(long_val_1, long_val_2, &result_long);
     flag = convert_from_long(result, result_long);
-    if ((get_sign(value_1) + get_sign(value_2) == 1) && !flag) set_sign(result);
+    if ((get_sign(value_1) + get_sign(value_2)) == 1) set_sign(result);
+    if ((get_sign(value_1) + get_sign(value_2)) == 1 && flag == 1) flag = 2;
+    if (flag) set_zero(result);
   }
   return flag;
 }
 
-void real_div(s21_long_decimal value_1, s21_long_decimal value_2, s21_long_decimal* result) {
+void real_div(s21_long_decimal value_1, s21_long_decimal value_2,
+              s21_long_decimal* result) {
   s21_long_decimal digit = {0}, temp_2;
   int count = 0, digits = 0, point = 0;
   copy_long_decimal(&temp_2, value_2);
@@ -63,8 +68,8 @@ void real_div(s21_long_decimal value_1, s21_long_decimal value_2, s21_long_decim
     count++;
     s21_long_decimal temp = {0};
     do {
-    real_add_long(value_2, temp, &temp);
-    we++;
+      real_add_long(value_2, temp, &temp);
+      we++;
     } while (s21_is_less_long(temp, value_1));
     real_sub_long(temp, value_2, &temp);
     digit.bits[0] = we;
@@ -78,7 +83,8 @@ void real_div(s21_long_decimal value_1, s21_long_decimal value_2, s21_long_decim
       mult_by_num_long(value_1, &value_1, 10);
     }
   }
-  set_scale_long(result, count-point+get_scale_long(value_1)-get_scale_long(value_2));
+  set_scale_long(result, count - point + get_scale_long(value_1) -
+                             get_scale_long(value_2));
 }
 
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
@@ -110,38 +116,9 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   return flag;
 }
 
-int real_add(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
-  decimal_normalization(&value_1, &value_2);
-  unsigned long long temp = 0;
-  for (int i = 0; i < 3; i++) {
-    temp += (unsigned long long)value_1.bits[i] +
-            (unsigned long long)value_2.bits[i];
-    result->bits[i] = (unsigned)temp;
-    temp >>= 32;
-  }
-  set_scale(result, get_scale(value_1));
-  return temp ? 1 : 0;
-}
-
 int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   s21_negate(value_2, &value_2);
   return s21_add(value_1, value_2, result);
-}
-
-int real_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
-  decimal_normalization(&value_1, &value_2);
-  unsigned long long temp = 0;
-  for (int i = 2; i >= 0; i--) {
-    temp = temp + (unsigned long long)value_1.bits[i] -
-           (unsigned long long)value_2.bits[i];
-    if (value_1.bits[i] < value_2.bits[i]) {
-      result->bits[i + 1]--;
-    }
-    result->bits[i] = (unsigned)temp;
-    temp <<= 32;
-  }
-  set_scale(result, get_scale(value_1));
-  return (int)temp;
 }
 
 bool mult_by_10(s21_decimal* decimal, int scale_big, int* scale_little) {
@@ -230,7 +207,7 @@ int real_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
     mult_by_num_long(long_val_1, &temp, mul);
     for (int i = 0; i < count; i++) {
       mult_by_num_long(temp, &temp, 10);
-    } 
+    }
     real_add_long(temp, result_long, &result_long);
     div_by_num_long(&long_val_2, 10);
     count++;
@@ -270,17 +247,16 @@ int convert_from_long(s21_decimal* decimal, s21_long_decimal long_decimal) {
   for (int i = 0; i < 3; i++) {
     decimal->bits[i] = long_decimal.bits[i];
   }
-  if (long_decimal.bits[6])
-    flag = 1;
+  if (long_decimal.bits[6]) flag = 1;
   decimal->bits[3] = scale_long << 16;
+  cut_zero(decimal);
   return flag;
 }
 
 void scale_move(s21_long_decimal* decimal) {
   int co_dig = count_digits_long(*decimal);
   while (co_dig > 29 && get_scale_long(*decimal) > co_dig) {
-    set_scale_long(decimal, get_scale_long(*decimal)-1);
-
+    set_scale_long(decimal, get_scale_long(*decimal) - 1);
   }
 }
 
@@ -343,20 +319,8 @@ int s21_is_less_long(s21_long_decimal value_1, s21_long_decimal value_2) {
   return res;
 }
 
-int s21_is_greater_long(s21_long_decimal value_1, s21_long_decimal value_2) {
-  int res = 0;
-  for (int i = 6; i >= 0; i--) {
-    if (value_1.bits[i] > value_2.bits[i]) {
-      res = 1;
-    } else if (value_1.bits[i] < value_2.bits[i])
-      break;
-  }
-  return res;
-}
-
 void real_add_long(s21_long_decimal value_1, s21_long_decimal value_2,
-                  s21_long_decimal* result) {
-  // decimal_normalization(&value_1, &value_2);
+                   s21_long_decimal* result) {
   unsigned long long temp = 0;
   for (int i = 0; i < 7; i++) {
     temp += (unsigned long long)value_1.bits[i] +
@@ -397,7 +361,8 @@ int real_round_long(s21_long_decimal* value, int* overcut, int overcut_size) {
   return flag_bank;
 }
 
-int real_sub_long(s21_long_decimal value_1, s21_long_decimal value_2, s21_long_decimal* result) {
+int real_sub_long(s21_long_decimal value_1, s21_long_decimal value_2,
+                  s21_long_decimal* result) {
   unsigned long long temp = 0;
   for (int i = 6; i >= 0; i--) {
     temp = temp + (unsigned long long)value_1.bits[i] -

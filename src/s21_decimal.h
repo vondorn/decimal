@@ -79,7 +79,7 @@ int count_digits_long(s21_long_decimal decimal);
 int s21_is_zero_long(s21_long_decimal value);
 int s21_is_less_long(s21_long_decimal value_1, s21_long_decimal value_2);
 void real_add_long(s21_long_decimal value_1, s21_long_decimal value_2,
-                  s21_long_decimal* result);
+                   s21_long_decimal* result);
 void mult_by_num_long(s21_long_decimal decimal, s21_long_decimal* result,
                       int num);
 int real_round_long(s21_long_decimal* value, int* overcut, int overcut_size);
@@ -89,7 +89,8 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal* result);
 void real_div(s21_long_decimal value_1, s21_long_decimal value_2,
               s21_long_decimal* result);
 void copy_long_decimal(s21_long_decimal* dest, const s21_long_decimal src);
-void decimal_normalization_long(s21_long_decimal* value_1, s21_long_decimal* value_2);
+void decimal_normalization_long(s21_long_decimal* value_1,
+                                s21_long_decimal* value_2);
 int s21_is_greater_long(s21_long_decimal value_1, s21_long_decimal value_2);
 int zero_rule(s21_long_decimal value_1, s21_long_decimal temp);
 void scale_move(s21_long_decimal* decimal);
