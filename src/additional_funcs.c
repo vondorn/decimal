@@ -59,7 +59,7 @@ void to_binary(unsigned n) {
 }
 
 void print_decimal(s21_decimal decimal) {
-  printf("%d: ", get_scale(decimal));
+  printf("%2d: ", get_scale(decimal));
   if (get_sign(decimal))
     printf("-");
   else
@@ -137,7 +137,7 @@ int real_round(s21_decimal* value, int* overcut, int overcut_size) {
 }
 
 void print_long_decimal(s21_long_decimal decimal) {
-  printf("%d: ", get_scale_long(decimal));
+  printf("%-2d: ", get_scale_long(decimal));
   for (int i = 6; i >= 0; i--) {
     to_binary(decimal.bits[i]);
     if (!i) printf("\n");

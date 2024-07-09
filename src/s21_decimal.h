@@ -91,14 +91,21 @@ void real_div(s21_long_decimal value_1, s21_long_decimal value_2,
 void copy_long_decimal(s21_long_decimal* dest, const s21_long_decimal src);
 void decimal_normalization_long(s21_long_decimal* value_1, s21_long_decimal* value_2);
 int s21_is_greater_long(s21_long_decimal value_1, s21_long_decimal value_2);
+int zero_rule(s21_long_decimal value_1, s21_long_decimal temp);
+void scale_move(s21_long_decimal* decimal);
 /*
 10000000000000000000000000000
 00000000000000000000000000001
-
+10101010101010101010
+5050505050505050505
+5050505050505050505
 + & +
 - & +
 + & -
 - & - ok
+63451589613543884634146341
+6304515890613543884634146341
+6304515890613543884634146341463414634146
 
 */
 
