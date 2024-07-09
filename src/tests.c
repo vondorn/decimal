@@ -186,6 +186,15 @@ START_TEST(s21_add7) {
 }
 END_TEST
 
+START_TEST(s21_add8) {
+  s21_decimal src1 = {0}, src2 = {0}, *result = NULL;
+  int return_value = 0, origin_return_value = 0;
+  return_value = s21_add(src1, src2, result);
+  origin_return_value = 4;
+  ck_assert_int_eq(return_value, origin_return_value);
+}
+END_TEST
+
 START_TEST(s21_sub1) {
   s21_decimal src1 = {0}, src2 = {0}, origin = {0}, result = {0};
   int return_value = 0, origin_return_value = 0;
@@ -410,6 +419,15 @@ START_TEST(s21_sub8) {
 }
 END_TEST
 
+START_TEST(s21_sub9) {
+  s21_decimal src1 = {0}, src2 = {0}, *result = NULL;
+  int return_value = 0, origin_return_value = 0;
+  return_value = s21_sub(src1, src2, result);
+  origin_return_value = 4;
+  ck_assert_int_eq(return_value, origin_return_value);
+}
+END_TEST
+
 START_TEST(s21_mul1) {
   s21_decimal src1 = {0}, src2 = {0}, origin = {0}, result = {0};
   int return_value = 0, origin_return_value = 0;
@@ -600,6 +618,15 @@ START_TEST(s21_mul8) {
   ck_assert_int_eq(origin.bits[1], result.bits[1]);
   ck_assert_int_eq(origin.bits[0], result.bits[0]);
   ck_assert_int_eq(value_type_result, value_type_origin);
+}
+END_TEST
+
+START_TEST(s21_mul9) {
+  s21_decimal src1 = {0}, src2 = {0}, *result = NULL;
+  int return_value = 0, origin_return_value = 0;
+  return_value = s21_mul(src1, src2, result);
+  origin_return_value = 4;
+  ck_assert_int_eq(return_value, origin_return_value);
 }
 END_TEST
 
@@ -2754,6 +2781,15 @@ START_TEST(s21_floor_8) {
 }
 END_TEST
 
+START_TEST(s21_floor_9) {
+  s21_decimal src1 = {0}, *result = NULL;
+  int return_value = 0, origin_return_value = 0;
+  return_value = s21_floor(src1, result);
+  origin_return_value = 1;
+  ck_assert_int_eq(return_value, origin_return_value);
+}
+END_TEST
+
 void srunner_arithmetics_tests(SRunner *sr) {
   Suite *Suite1 = suite_create("arithmetics");
   TCase *TestCase1 = tcase_create("arithmetics");
@@ -2765,6 +2801,7 @@ void srunner_arithmetics_tests(SRunner *sr) {
   tcase_add_test(TestCase1, s21_add5);
   tcase_add_test(TestCase1, s21_add6);
   tcase_add_test(TestCase1, s21_add7);
+  tcase_add_test(TestCase1, s21_add8);
 
   tcase_add_test(TestCase1, s21_sub1);
   tcase_add_test(TestCase1, s21_sub2);
@@ -2774,6 +2811,7 @@ void srunner_arithmetics_tests(SRunner *sr) {
   tcase_add_test(TestCase1, s21_sub6);
   tcase_add_test(TestCase1, s21_sub7);
   tcase_add_test(TestCase1, s21_sub8);
+  tcase_add_test(TestCase1, s21_sub9);
 
   tcase_add_test(TestCase1, s21_mul1);
   tcase_add_test(TestCase1, s21_mul2);
@@ -2782,6 +2820,7 @@ void srunner_arithmetics_tests(SRunner *sr) {
   tcase_add_test(TestCase1, s21_mul6);
   tcase_add_test(TestCase1, s21_mul7);
   tcase_add_test(TestCase1, s21_mul8);
+  tcase_add_test(TestCase1, s21_mul9);
 
   tcase_add_test(TestCase1, s21_div1);
   tcase_add_test(TestCase1, s21_div2);
@@ -2934,6 +2973,8 @@ void srunner_other_funcs_tests(SRunner *sr) {
   tcase_add_test(TestCase1, s21_floor_6);
   tcase_add_test(TestCase1, s21_floor_7);
   tcase_add_test(TestCase1, s21_floor_8);
+  tcase_add_test(TestCase1, s21_floor_9);
+
   srunner_add_suite(sr, Suite1);
 }
 

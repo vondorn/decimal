@@ -37,7 +37,7 @@
 int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   int flag = 0;
   if (result == NULL) {
-    flag = 4;
+    flag = NULL_ERROR;
   } else if (s21_is_zero(value_2)) {
     flag = 3;
   } else if (!s21_is_zero(value_1)) {
@@ -91,6 +91,9 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   int flag = 0, sign_flag = 0;
   int sign_1 = get_sign(value_1);
   int sign_2 = get_sign(value_2);
+  if (result == NULL) {
+    return NULL_ERROR;
+  }
   s21_long_decimal long_val_1, long_val_2, result_long = {0};
   convert_to_long(value_1, &long_val_1);
   convert_to_long(value_2, &long_val_2);
@@ -184,6 +187,7 @@ int mod_by_num(s21_decimal value, int integer) {
 
 int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result) {
   int flag = 0;
+  if (result == NULL) return NULL_ERROR;
   cut_zero(&value_1);
   cut_zero(&value_2);
   set_zero(result);

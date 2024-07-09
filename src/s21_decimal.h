@@ -7,6 +7,7 @@
 #define SCALE 0xff
 #define POSSIBLE 0x80ff0000
 #define MAX 0xffffffff
+#define NULL_ERROR 4
 
 typedef struct {
   unsigned bits[4];
